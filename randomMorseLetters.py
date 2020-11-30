@@ -2,6 +2,9 @@ from time import sleep
 import os
 from random import randrange
 
+print(os.name)
+
+windows = os.name == 'nt' # If we are running on windows
 tempo = 0.1 #Un dixième de seconde par temps
 frequency = 500
 
@@ -23,8 +26,10 @@ class Lettre:
                 duration = 0
                 print('Lettre non reconnue !')
 
-
-            os.system('play -nq -t alsa synth %s sin %s ' % (duration * tempo, frequency))
+            if(windows):
+                os.system('sox -nq -t waveaudio synth %s sin %s' % (duration * tempo, frequency))
+            else:
+                os.system('play -nq -t alsa synth %s sin %s ' % (duration * tempo, frequency))
 
 with open('lettersInMorse.txt') as f:
     alphabet = f.readlines()
@@ -76,8 +81,12 @@ while nbLetters > 0:
         if(ans != l.name):
             print('Raté ! Il reste %s essais.' % str(3-essais))
         else:
-            os.system('play -nq -t alsa synth %s sin %s ' % (0.2, 200))
-            os.system('play -nq -t alsa synth %s sin %s ' % (0.2, 1000))
+            if(windows):
+                os.system('sox -nq -t waveaudio synth %s sin %s ' % (0.2, 200))
+                os.system('sox -nq -t waveaudio synth %s sin %s ' % (0.2, 1000))
+            else:
+                os.system('play -nq -t alsa synth %s sin %s ' % (0.2, 200))
+                os.system('play -nq -t alsa synth %s sin %s ' % (0.2, 1000))
             if(mode == "Elimination"):
                 nbLetters -= 1
                 letters.pop(choice)
