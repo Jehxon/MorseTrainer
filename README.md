@@ -9,5 +9,5 @@ This mode plays letters in a completely random way, and doesn't have an end. It 
 In this mode, correctly guessed letters won't be played again. The program then ends when there is no letters left.
 
 ## Installation
-This requires the sox package to be installed. It can be installed with `sudo apt-get install sox`.
+This requires the SoX package to be installed. It can be installed on Linux with `sudo apt-get install sox`.
 This is a simple python script. Launch it directly in a console with python 3.
