@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # morse_trainer
 
 A little (probably terrible) application to learn morse code.
@@ -14,3 +15,4 @@ The application offers several modes :
 * ***Encode letter mode :*** Find the code for a letter (TODO)
 * ***Decode word mode :*** Listen to a full word in morse code and write the word (TODO)
 * Other ideas are coming ! Stay tuned :)
+* 
