@@ -1,13 +1,16 @@
-# MorseTrainer
-This is a python program to help one to learn morse letters. It is a mini-game that plays audio morse letters,
-and wait for the user to guess what letter the sound corresponds to. The user has 3 attempts.
+# morse_trainer
 
-It allows the user to choose between to modes : 
-* #### Infinity mode :
-This mode plays letters in a completely random way, and doesn't have an end. It can be stopped by typing "stop" instead of an answer.
-* #### Elimination mode :
-In this mode, correctly guessed letters won't be played again. The program then ends when there is no letters left.
+A little (probably terrible) application to learn morse code.
 
-## Installation
-This requires the SoX package to be installed. It can be installed on Linux with `sudo apt-get install sox`.
-This is a simple python script. Launch it directly in a console with python 3.
+## Getting Started
+
+You can find the apk for android in the 'apk' folder. If you download it, you need to authorize the installation of applications from "unknown" sources.
+
+## Description
+
+The application offers several modes :
+* ***Learning mode :*** In this mode you can find all letters in the alphabet, with the corresponding morse code. You can click on a letter to hear it played.
+* ***Decode letter mode :*** Listen to morse code and chose what is the letter (TODO)
+* ***Encode letter mode :*** Find the code for a letter (TODO)
+* ***Decode word mode :*** Listen to a full word in morse code and write the word (TODO)
+* Other ideas are coming ! Stay tuned :)
