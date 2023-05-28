@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
-import 'package:morse_trainer/widgets/mode_standard/learning_page.dart';
+import 'package:morse_trainer/widgets/modes/learning_page.dart';
+import 'package:morse_trainer/widgets/modes/guess_letter_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -14,6 +15,7 @@ class _HomePageState extends State<HomePage> {
 
   static final List<Widget> widgetOptions = <Widget>[
     const LearningPage(),
+    const GuessLetterPage(),
   ];
 
   void changePage(int index) {
@@ -52,7 +54,9 @@ class _HomePageState extends State<HomePage> {
             ListTile(
               leading: const Icon(Ionicons.ear_outline),
               title: const Text('Reconnaître'),
-              onTap: () { },
+              onTap: () {
+                changePage(1);
+              },
             ),
             ListTile(
               leading: const Icon(Icons.calendar_month_outlined),

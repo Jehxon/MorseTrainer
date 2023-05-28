@@ -1,5 +1,4 @@
-<<<<<<< HEAD
-# morse_trainer
+# Morse Trainer
 
 A little (probably terrible) application to learn morse code.
 

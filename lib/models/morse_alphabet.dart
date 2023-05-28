@@ -1,33 +1,35 @@
 import 'package:audioplayers/audioplayers.dart';
 
+final audioPlayer = AudioPlayer();
+
 const String alphabet = "abcdefghijklmnopqrstuvwxyz";
 const List<String> morseLetterSounds = [
-  ".-",
-  "-...",
-  "-.-.",
-  "-..",
-  ".",
-  "..-.",
-  "--.",
-  "....",
-  "..",
-  ".---",
-  "-.-",
-  ".-..",
+  "\u2022-",
+  "-\u2022\u2022\u2022",
+  "-\u2022-\u2022",
+  "-\u2022\u2022",
+  "\u2022",
+  "\u2022\u2022-\u2022",
+  "--\u2022",
+  "\u2022\u2022\u2022\u2022",
+  "\u2022\u2022",
+  "\u2022---",
+  "-\u2022-",
+  "\u2022-\u2022\u2022",
   "--",
-  "-.",
+  "-\u2022",
   "---",
-  ".--.",
-  "--.-",
-  ".-.",
-  "...",
+  "\u2022--\u2022",
+  "--\u2022-",
+  "\u2022-\u2022",
+  "\u2022\u2022\u2022",
   "-",
-  "..-",
-  "...-",
-  ".--",
-  "-..-",
-  "-.--",
-  "--..",
+  "\u2022\u2022-",
+  "\u2022\u2022\u2022-",
+  "\u2022--",
+  "-\u2022\u2022-",
+  "-\u2022--",
+  "--\u2022\u2022",
 ];
 
 Map<String, Letter> morseAlphabet = {
@@ -38,12 +40,11 @@ Map<String, Letter> morseAlphabet = {
 class Letter {
   late final String name;
   late final String sound;
-  final player = AudioPlayer();
 
   Letter({required this.name, required this.sound});
 
   Future<void> play() async {
-    await player
+    await audioPlayer
         .play(AssetSource("sounds/${name.toUpperCase()}_morse_code.ogg"));
   }
 }
