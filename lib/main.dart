@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:morse_trainer/models/preferences.dart';
 import 'home_page.dart';
+import 'package:morse_trainer/global.dart';
 
 void main() async {
   runApp(const MainApp());
@@ -14,23 +16,37 @@ class MainApp extends StatefulWidget {
 
 class _MainAppState extends State<MainApp> with WidgetsBindingObserver {
   bool initialized = false;
+  ThemeData theme = ThemeData(primarySwatch: Colors.deepOrange);
 
   @override
   void initState() {
     WidgetsBinding.instance.addObserver(this);
     getData();
+    addThemeChangeCallback(updateColorCallback);
     super.initState();
   }
 
+  void updateColorCallback(Color c){
+    setState(() {
+      MaterialColor matColor = toMaterialColor(c);
+      theme = ThemeData(
+          primarySwatch: matColor
+      );
+    });
+  }
+
   void getData() async {
+    await initPreferences();
     setState(() {
       initialized = true;
+      theme = ThemeData(primarySwatch: toMaterialColor(Color(preferences["appColor"]!)));
     });
   }
 
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
+    removeThemeChangeCallback(updateColorCallback);
     super.dispose();
   }
 
@@ -54,10 +70,8 @@ class _MainAppState extends State<MainApp> with WidgetsBindingObserver {
     if (initialized) {
       return MaterialApp(
           title: 'Morse Trainer',
-          theme: ThemeData(
-            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepOrange),
-          ),
-          home: const HomePage()
+          theme: theme,
+          home: const HomePage(),
       );
     } else {
       return const Center(child: CircularProgressIndicator());

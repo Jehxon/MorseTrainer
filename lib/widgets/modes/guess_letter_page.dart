@@ -1,38 +1,56 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:morse_trainer/global.dart';
 import 'package:morse_trainer/models/morse_alphabet.dart';
+import 'package:morse_trainer/models/preferences.dart';
+
+enum ChoiceState { neutral, correctlyGuessed, wronglyGuessed }
 
 class LetterChoice extends StatelessWidget {
   final String letter;
   final Future<void> Function(int) onPress;
   final int id;
-  final Color color;
+  final ChoiceState state;
 
   const LetterChoice({
     super.key,
     required this.letter,
     required this.onPress,
     required this.id,
-    required this.color,
+    required this.state,
   });
 
   @override
   Widget build(BuildContext context) {
+    Color backgroundColor = Colors.transparent;
+    Color borderColor = Color(preferences["appColor"]!);
+    switch (state) {
+      case ChoiceState.correctlyGuessed:
+        backgroundColor = Colors.green;
+        borderColor = Colors.green;
+      case ChoiceState.wronglyGuessed:
+        backgroundColor = Colors.red;
+        borderColor = Colors.red;
+      case ChoiceState.neutral:
+      // nothing to do
+    }
     return Material(
       elevation: 20,
       borderRadius: const BorderRadius.all(Radius.circular(8)),
       child: InkWell(
         onTap: () async {
-          await onPress(id);
+          if (state == ChoiceState.neutral) {
+            await onPress(id);
+          }
         },
         child: Container(
           decoration: BoxDecoration(
-            color: color,
+            color: backgroundColor,
             borderRadius: const BorderRadius.all(Radius.circular(8)),
             border: Border.all(
               width: 3,
-              color: color == Colors.transparent ? Colors.deepOrange : color,
+              color: borderColor,
             ),
           ),
           child: Center(
@@ -57,32 +75,44 @@ class GuessLetterPage extends StatefulWidget {
 }
 
 class _GuessLetterPageState extends State<GuessLetterPage> {
-  int numberOfChoices = 8;
+  int numberOfChoices = preferences["guessLetterNumberOfChoice"]!;
+  int showSound = preferences["guessLetterShowSound"]!;
   late String letterToFind;
   late List<LetterChoice> choiceWidgets;
   late List<String> choicesLetters;
-  late List<Color> choiceColors;
+  late List<ChoiceState> choicesStates;
   int streak = 0;
   static List<int> numbers = [for (int i = 0; i < alphabet.length; i++) i];
+
+  void updateColorCallback(Color c) {
+    setState(() {});
+  }
 
   @override
   void initState() {
     letterToFind = "";
     drawNewLetterToGuess();
+    addThemeChangeCallback(updateColorCallback);
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    removeThemeChangeCallback(updateColorCallback);
+    super.dispose();
   }
 
   void drawNewLetterToGuess() {
     setState(() {
       choicesLetters = randomLetters(numberOfChoices);
-      if(choicesLetters.first == letterToFind) {
+      if (choicesLetters.first == letterToFind) {
         letterToFind = choicesLetters[1];
       } else {
         letterToFind = choicesLetters.first;
       }
       choicesLetters.shuffle();
-      choiceColors = [
-        for (int i = 0; i < choicesLetters.length; i++) Colors.transparent
+      choicesStates = [
+        for (int i = 0; i < choicesLetters.length; i++) ChoiceState.neutral
       ];
     });
     morseAlphabet[letterToFind]?.play();
@@ -102,21 +132,36 @@ class _GuessLetterPageState extends State<GuessLetterPage> {
       audioPlayer.play(AssetSource("sounds/correct_guess.mp3"));
       setState(() {
         streak += 1;
-        choiceColors[choiceId] = Colors.lightGreen;
+        choicesStates[choiceId] = ChoiceState.correctlyGuessed;
       });
+      if (streak > preferences["guessLetterHighScore"]!) {
+        preferences["guessLetterHighScore"] = streak;
+        savePreferences();
+      }
       await Future.delayed(const Duration(seconds: 1));
       drawNewLetterToGuess();
     } else {
       audioPlayer.play(AssetSource("sounds/wrong_guess.mp3"));
       setState(() {
         streak = 0;
-        choiceColors[choiceId] = Colors.red;
+        choicesStates[choiceId] = ChoiceState.wronglyGuessed;
       });
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    Widget soundShown = switch (preferences["guessLetterShowSound"]!) {
+      0 => const Icon(Ionicons.eye_off),
+      _ => Text(
+          morseAlphabet[letterToFind]!.sound,
+          style: const TextStyle(
+            fontSize: 50,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+    };
+
     return Scaffold(
       body: Center(
         child: Column(
@@ -128,13 +173,7 @@ class _GuessLetterPageState extends State<GuessLetterPage> {
                 fontSize: 30,
               ),
             ),
-            Text(
-              morseAlphabet[letterToFind]!.sound,
-              style: const TextStyle(
-                fontSize: 50,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+            soundShown,
             const SizedBox(height: 10),
             ElevatedButton(
               style: const ButtonStyle(
@@ -164,18 +203,21 @@ class _GuessLetterPageState extends State<GuessLetterPage> {
                       letter: choicesLetters[i],
                       onPress: onGuess,
                       id: i,
-                      color: choiceColors[i],
+                      state: choicesStates[i],
                     ),
                 ],
               ),
             ),
+            const Divider(height: 10),
             Text(
-              "Nombre de réussites d'affilées : $streak",
+              "Nombre de réussites d'affilées : $streak\nMeilleur score : ${preferences["guessLetterHighScore"]}",
+              textAlign: TextAlign.center,
               style: const TextStyle(
                 fontSize: 20,
                 fontStyle: FontStyle.italic,
               ),
             ),
+            const SizedBox(height: 10),
           ],
         ),
       ),
