@@ -1,6 +1,5 @@
 import 'package:audioplayers/audioplayers.dart';
-
-final audioPlayer = AudioPlayer();
+import 'package:morse_trainer/global.dart';
 
 const String alphabet = "abcdefghijklmnopqrstuvwxyz";
 const List<String> morseLetterSounds = [

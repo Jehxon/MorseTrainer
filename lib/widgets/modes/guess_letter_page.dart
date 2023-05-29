@@ -84,22 +84,11 @@ class _GuessLetterPageState extends State<GuessLetterPage> {
   int streak = 0;
   static List<int> numbers = [for (int i = 0; i < alphabet.length; i++) i];
 
-  void updateColorCallback(Color c) {
-    setState(() {});
-  }
-
   @override
   void initState() {
     letterToFind = "";
     drawNewLetterToGuess();
-    addThemeChangeCallback(updateColorCallback);
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    removeThemeChangeCallback(updateColorCallback);
-    super.dispose();
   }
 
   void drawNewLetterToGuess() {
@@ -177,12 +166,13 @@ class _GuessLetterPageState extends State<GuessLetterPage> {
             const SizedBox(height: 10),
             ElevatedButton(
               style: const ButtonStyle(
-                maximumSize: MaterialStatePropertyAll<Size>(Size(117, 100)),
+                maximumSize: MaterialStatePropertyAll<Size>(Size(140, 100)),
               ),
               onPressed: () {
                 morseAlphabet[letterToFind]?.play();
               },
               child: const Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text("Écouter"),
                   SizedBox(width: 10),

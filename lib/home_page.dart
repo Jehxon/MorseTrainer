@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:morse_trainer/widgets/modes/learning_page.dart';
 import 'package:morse_trainer/widgets/modes/guess_letter_page.dart';
+import 'package:morse_trainer/widgets/modes/guess_sound_page.dart';
 import 'package:morse_trainer/widgets/parameters_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -17,6 +18,7 @@ class _HomePageState extends State<HomePage> {
   static final List<Widget> widgetOptions = <Widget>[
     const LearningPage(),
     const GuessLetterPage(),
+    const GuessSoundPage(),
     const ParameterPage(),
   ];
 
@@ -48,29 +50,31 @@ class _HomePageState extends State<HomePage> {
             ),
             ListTile(
               leading: const Icon(Ionicons.book_sharp),
-              title: const Text('Apprendre'),
+              title: const Text('Alphabet'),
               onTap: () {
                 changePage(0);
               },
             ),
             ListTile(
               leading: const Icon(Ionicons.ear_outline),
-              title: const Text('Reconnaître'),
+              title: const Text('Quelle est la lettre ?'),
               onTap: () {
                 changePage(1);
               },
             ),
             ListTile(
               leading: const Icon(Ionicons.pencil),
-              title: const Text('Mode 3 (TODO =D)'),
-              onTap: () { },
+              title: const Text('Quel est le son ?'),
+              onTap: () {
+                changePage(2);
+              },
             ),
             const Divider(),
             ListTile(
               leading: const Icon(Icons.settings),
               title: const Text('Paramètres'),
               onTap: () async {
-                changePage(2);
+                changePage(3);
               },
             ),
             const Divider(),
