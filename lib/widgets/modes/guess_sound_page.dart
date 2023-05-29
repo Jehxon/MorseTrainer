@@ -75,9 +75,9 @@ class _GuessSoundPageState extends State<GuessSoundPage> {
           children: [
             const SizedBox(height: 30),
             const Text(
-              "Quel est le son de cette lettre ?",
+              "Quel son fait cette lettre ?",
               style: TextStyle(
-                fontSize: 30,
+                fontSize: 25,
               ),
             ),
             const SizedBox(height: 10),
@@ -88,7 +88,7 @@ class _GuessSoundPageState extends State<GuessSoundPage> {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const Divider(height: 30),
+            const Divider(height: 10),
             Text(
               "[ $currentGuess ]",
               style: const TextStyle(
@@ -128,14 +128,14 @@ class _GuessSoundPageState extends State<GuessSoundPage> {
                   }
                 },
                 child: Container(
-                  width: 200,
-                  height: 200,
+                  width: 180,
+                  height: 180,
                   decoration: BoxDecoration(
                     color: correctGuess ? Colors.green : Colors.transparent,
                     borderRadius: const BorderRadius.all(Radius.circular(8)),
                     border: Border.all(
                       width: 3,
-                      color: Color(preferences["appColor"]!),
+                      color: correctGuess ? Colors.green : Color(preferences["appColor"]!),
                     ),
                   ),
                   child: const Center(
