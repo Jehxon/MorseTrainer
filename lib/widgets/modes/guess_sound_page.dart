@@ -105,23 +105,26 @@ class _GuessSoundPageState extends State<GuessSoundPage> {
                   if(correctGuess){
                     return;
                   }
+                  morseAlphabet["t"]?.play();
                   lastPress = DateTime.now();
                 },
-                onTapUp: (TapUpDetails details) {
+                onTapUp: (TapUpDetails details) async {
                   if(correctGuess){
                     return;
                   }
                   Duration pressDuration = DateTime.now().difference(lastPress);
+                  if(pressDuration < const Duration(milliseconds: 100)){
+                    await Future.delayed(const Duration(milliseconds: 100) - pressDuration);
+                  }
+                  await audioPlayer.stop();
                   if (pressDuration > const Duration(milliseconds: 250)) {
                     setState(() {
                       currentGuess = "$currentGuess-";
                     });
-                    morseAlphabet["t"]?.play();
                   } else {
                     setState(() {
                       currentGuess = "$currentGuess\u2022";
                     });
-                    morseAlphabet["e"]?.play();
                   }
                 },
                 child: Container(
