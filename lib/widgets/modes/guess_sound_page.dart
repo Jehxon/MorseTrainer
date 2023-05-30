@@ -1,5 +1,4 @@
 import 'dart:math';
-import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:morse_trainer/global.dart';
 import 'package:morse_trainer/models/morse_alphabet.dart';
@@ -47,7 +46,6 @@ class _GuessSoundPageState extends State<GuessSoundPage> {
 
   Future<void> onGuess() async {
     if (isRightSound(currentGuess)) {
-      audioPlayer.play(AssetSource("sounds/correct_guess.mp3"));
       setState(() {
         streak += 1;
         correctGuess = true;
@@ -56,14 +54,15 @@ class _GuessSoundPageState extends State<GuessSoundPage> {
         preferences["guessSoundHighScore"] = streak;
         savePreferences();
       }
+      await audioPlayer.play("sounds/correct_guess.mp3");
       await Future.delayed(const Duration(seconds: 1));
       drawNewSoundToGuess();
     } else {
-      audioPlayer.play(AssetSource("sounds/wrong_guess.mp3"));
       setState(() {
         streak = 0;
         currentGuess = "";
       });
+      await audioPlayer.play("sounds/wrong_guess.mp3");
     }
   }
 
@@ -105,7 +104,7 @@ class _GuessSoundPageState extends State<GuessSoundPage> {
                   if(correctGuess){
                     return;
                   }
-                  morseAlphabet["t"]?.play();
+                  fastAudioPlayer.play();
                   lastPress = DateTime.now();
                 },
                 onTapUp: (TapUpDetails details) async {
@@ -116,7 +115,7 @@ class _GuessSoundPageState extends State<GuessSoundPage> {
                   if(pressDuration < const Duration(milliseconds: 100)){
                     await Future.delayed(const Duration(milliseconds: 100) - pressDuration);
                   }
-                  await audioPlayer.stop();
+                  fastAudioPlayer.stop();
                   if (pressDuration > const Duration(milliseconds: 250)) {
                     setState(() {
                       currentGuess = "$currentGuess-";

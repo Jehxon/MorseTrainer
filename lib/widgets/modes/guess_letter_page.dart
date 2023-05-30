@@ -1,4 +1,3 @@
-import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:morse_trainer/global.dart';
@@ -118,7 +117,6 @@ class _GuessLetterPageState extends State<GuessLetterPage> {
 
   Future<void> onGuess(int choiceId) async {
     if (isRightChoice(choicesLetters[choiceId])) {
-      audioPlayer.play(AssetSource("sounds/correct_guess.mp3"));
       setState(() {
         streak += 1;
         choicesStates[choiceId] = ChoiceState.correctlyGuessed;
@@ -127,14 +125,15 @@ class _GuessLetterPageState extends State<GuessLetterPage> {
         preferences["guessLetterHighScore"] = streak;
         savePreferences();
       }
+      await audioPlayer.play("sounds/correct_guess.mp3");
       await Future.delayed(const Duration(seconds: 1));
       drawNewLetterToGuess();
     } else {
-      audioPlayer.play(AssetSource("sounds/wrong_guess.mp3"));
       setState(() {
         streak = 0;
         choicesStates[choiceId] = ChoiceState.wronglyGuessed;
       });
+      await audioPlayer.play("sounds/wrong_guess.mp3");
     }
   }
 

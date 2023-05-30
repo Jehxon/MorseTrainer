@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:morse_trainer/widgets/modes/guess_word_page.dart';
 import 'package:morse_trainer/widgets/modes/learning_page.dart';
 import 'package:morse_trainer/widgets/modes/guess_letter_page.dart';
 import 'package:morse_trainer/widgets/modes/guess_sound_page.dart';
@@ -19,6 +20,7 @@ class _HomePageState extends State<HomePage> {
     const LearningPage(),
     const GuessLetterPage(),
     const GuessSoundPage(),
+    const GuessWordPage(),
     const ParameterPage(),
   ];
 
@@ -69,12 +71,19 @@ class _HomePageState extends State<HomePage> {
                 changePage(2);
               },
             ),
+            ListTile(
+              leading: const Icon(Ionicons.logo_wordpress),
+              title: const Text('Quel est le mot ?'),
+              onTap: () {
+                changePage(3);
+              },
+            ),
             const Divider(),
             ListTile(
               leading: const Icon(Icons.settings),
               title: const Text('Paramètres'),
               onTap: () async {
-                changePage(3);
+                changePage(4);
               },
             ),
             const Divider(),

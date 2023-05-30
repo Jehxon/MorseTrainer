@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:morse_trainer/models/preferences.dart';
+import 'package:morse_trainer/models/audio_players.dart';
 
-final audioPlayer = AudioPlayer();
+final Audio audioPlayer = Audio();
+final FastAudioPlayer fastAudioPlayer = FastAudioPlayer();
 
 List<Function(Color)> colorChangeCallbacks = [];
 
@@ -13,6 +14,7 @@ Map<String, int> preferences = {
   "guessLetterHighScore": 0,
   "guessLetterShowSound": 1,
   "guessSoundHighScore": 0,
+  "guessWordHighScore": 0,
 };
 
 List<String> frenchDict = [];
@@ -31,12 +33,13 @@ void changeAppColor(Color c) {
   }
 }
 
-String removeDiacritics(String str) {
+String formatWord(String str) {
   const String withDia = "ÀÁÂÃÄÅàáâãäåÒÓÔÕÕÖØòóôõöøÈÉÊËèéêëðÇçÐÌÍÎÏìíîïÙÚÛÜùúûüÑñŠšŸÿýŽž'";
   const String withoutDia = "AAAAAAaaaaaaOOOOOOOooooooEEEEeeeeeCcDIIIIiiiiUUUUuuuuNnSsYyyZz ";
   for (int i = 0; i < withDia.length; i++) {
     str = str.replaceAll(withDia[i], withoutDia[i]);
   }
+  str = str.replaceAll(" ", "").toLowerCase().trim();
   return str;
 }
 

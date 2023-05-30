@@ -1,4 +1,3 @@
-import 'package:audioplayers/audioplayers.dart';
 import 'package:morse_trainer/global.dart';
 
 const String alphabet = "abcdefghijklmnopqrstuvwxyz";
@@ -39,11 +38,23 @@ Map<String, Letter> morseAlphabet = {
 class Letter {
   late final String name;
   late final String sound;
+  late Duration duration;
 
-  Letter({required this.name, required this.sound});
+  Letter({required this.name, required this.sound}) {
+    duration = Duration.zero;
+    for (int i = 0; i < sound.length; i++) {
+      switch (sound[i]) {
+        case "\u2022":
+          duration += const Duration(milliseconds: 100);
+        case "-":
+          duration += const Duration(milliseconds: 300);
+        default:
+      }
+    }
+    duration += Duration(milliseconds: 100 * sound.length);
+  }
 
   Future<void> play() async {
-    await audioPlayer
-        .play(AssetSource("sounds/${name.toUpperCase()}_morse_code.ogg"));
+    await audioPlayer.play("sounds/${name.toUpperCase()}_morse_code.ogg");
   }
 }
