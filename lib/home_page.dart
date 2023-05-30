@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
-import 'package:morse_trainer/widgets/modes/guess_word_page.dart';
-import 'package:morse_trainer/widgets/modes/learning_page.dart';
-import 'package:morse_trainer/widgets/modes/guess_letter_page.dart';
-import 'package:morse_trainer/widgets/modes/guess_sound_page.dart';
-import 'package:morse_trainer/widgets/parameters_page.dart';
+import 'package:morse_trainer/pages/learning_page.dart';
+import 'package:morse_trainer/pages/guess_letter_page.dart';
+import 'package:morse_trainer/pages/guess_sound_page.dart';
+import 'package:morse_trainer/pages/guess_word_page.dart';
+import 'package:morse_trainer/pages/parameters_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

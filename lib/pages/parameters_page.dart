@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:morse_trainer/global.dart';
-import 'package:morse_trainer/models/color_picker.dart';
-import 'package:morse_trainer/models/int_picker.dart';
+import 'package:morse_trainer/pickers/color_picker.dart';
+import 'package:morse_trainer/pickers/int_picker.dart';
 import 'package:morse_trainer/models/preferences.dart';
 
 class ParameterPage extends StatefulWidget {
@@ -58,7 +58,7 @@ class _ParameterPageState extends State<ParameterPage> {
                   ? Ionicons.eye_off
                   : Ionicons.eye,
             ),
-            onTap: () async {
+            onTap: () {
               setState(() {
                 preferences["guessLetterShowSound"] =
                     1 - preferences["guessLetterShowSound"]!;
@@ -69,7 +69,13 @@ class _ParameterPageState extends State<ParameterPage> {
                 "Afficher le motif du son dans le mode 'Reconnaître'"),
             trailing: Checkbox(
               value: preferences["guessLetterShowSound"] == 1,
-              onChanged: (bool? value) {},
+              onChanged: (bool? value) {
+                setState(() {
+                  preferences["guessLetterShowSound"] =
+                      1 - preferences["guessLetterShowSound"]!;
+                  savePreferences();
+                });
+              },
             ),
           ),
         ],

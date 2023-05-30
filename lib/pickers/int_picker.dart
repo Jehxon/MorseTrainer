@@ -32,7 +32,7 @@ class _IntPickerState extends State<IntPicker> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text("$currentValue"),
+        Text("${currentValue.toInt()}"),
         Slider(
           value: currentValue,
           min: widget.minValue.toDouble(),

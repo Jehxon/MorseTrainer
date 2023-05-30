@@ -2,9 +2,6 @@ import 'package:audioplayers/audioplayers.dart';
 
 class Audio {
   static final AudioPlayer player = AudioPlayer();
-  Audio() {
-    player.setPlayerMode(PlayerMode.lowLatency);
-  }
   Future<void> play(String assetPath) async {
     await player.play(AssetSource(assetPath));
   }

@@ -119,6 +119,9 @@ class _GuessLetterPageState extends State<GuessLetterPage> {
     if (isRightChoice(choicesLetters[choiceId])) {
       setState(() {
         streak += 1;
+        for(int i = 0; i < choicesStates.length; i++){
+          choicesStates[i] = ChoiceState.wronglyGuessed;
+        }
         choicesStates[choiceId] = ChoiceState.correctlyGuessed;
       });
       if (streak > preferences["guessLetterHighScore"]!) {
