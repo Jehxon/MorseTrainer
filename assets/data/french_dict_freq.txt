@@ -1388,6 +1388,3 @@ noyer
 semer
 manche
 rage
-gré
-guider
-piquer

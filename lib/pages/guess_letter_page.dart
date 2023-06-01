@@ -154,64 +154,63 @@ class _GuessLetterPageState extends State<GuessLetterPage> {
     };
 
     return Scaffold(
-      body: Center(
-        child: Column(
-          children: [
-            const SizedBox(height: 30),
-            const Text(
-              "Quelle est cette lettre ?",
-              style: TextStyle(
-                fontSize: 30,
-              ),
+      body: Column(
+        children: [
+          const SizedBox(height: 30),
+          const Text(
+            "Quelle est cette lettre ?",
+            style: TextStyle(
+              fontSize: 30,
             ),
-            soundShown,
-            const SizedBox(height: 10),
-            ElevatedButton(
-              style: const ButtonStyle(
-                maximumSize: MaterialStatePropertyAll<Size>(Size(140, 100)),
-              ),
-              onPressed: () {
-                morseAlphabet[letterToFind]?.play();
-              },
-              child: const Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text("Écouter"),
-                  SizedBox(width: 10),
-                  Icon(Ionicons.musical_notes_sharp),
-                ],
-              ),
+          ),
+          soundShown,
+          const SizedBox(height: 10),
+          ElevatedButton(
+            style: const ButtonStyle(
+              maximumSize: MaterialStatePropertyAll<Size>(Size(140, 100)),
             ),
-            const Divider(height: 10),
-            Expanded(
-              child: GridView.count(
-                crossAxisCount: 4,
-                padding: const EdgeInsets.all(30),
-                mainAxisSpacing: 30,
-                crossAxisSpacing: 30,
-                children: [
-                  for (int i = 0; i < choicesLetters.length; i++)
-                    LetterChoice(
-                      letter: choicesLetters[i],
-                      onPress: onGuess,
-                      id: i,
-                      state: choicesStates[i],
-                    ),
-                ],
-              ),
+            onPressed: () {
+              morseAlphabet[letterToFind]?.play();
+            },
+            child: const Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text("Écouter"),
+                SizedBox(width: 10),
+                Icon(Ionicons.musical_notes_sharp),
+              ],
             ),
-            const Divider(height: 10),
-            Text(
-              "Nombre de réussites d'affilées : $streak\nMeilleur score : ${preferences["guessLetterHighScore"]}",
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: 20,
-                fontStyle: FontStyle.italic,
-              ),
+          ),
+          const Divider(height: 10),
+          Expanded(
+            child: GridView.count(
+              crossAxisCount: 4,
+              padding: const EdgeInsets.all(30),
+              mainAxisSpacing: 30,
+              crossAxisSpacing: 30,
+              primary: false,
+              children: [
+                for (int i = 0; i < choicesLetters.length; i++)
+                  LetterChoice(
+                    letter: choicesLetters[i],
+                    onPress: onGuess,
+                    id: i,
+                    state: choicesStates[i],
+                  ),
+              ],
             ),
-            const SizedBox(height: 10),
-          ],
-        ),
+          ),
+          const Divider(height: 10),
+          Text(
+            "Nombre de réussites d'affilées : $streak\nMeilleur score : ${preferences["guessLetterHighScore"]}",
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              fontSize: 20,
+              fontStyle: FontStyle.italic,
+            ),
+          ),
+          const SizedBox(height: 10),
+        ],
       ),
     );
   }

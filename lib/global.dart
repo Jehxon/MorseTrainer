@@ -11,6 +11,7 @@ List<Function(Color)> colorChangeCallbacks = [];
 Map<String, int> preferences = {
   "appColor": Colors.deepOrange.value,
   "guessLetterNumberOfChoice": 8,
+  "guessWordNumberOfWords": 20,
   "guessLetterHighScore": 0,
   "guessLetterShowSound": 1,
   "guessSoundHighScore": 0,

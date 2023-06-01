@@ -31,13 +31,19 @@ class _IntPickerState extends State<IntPicker> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
-        Text("${currentValue.toInt()}"),
+        Text(
+          "${currentValue.toInt()}",
+          style: const TextStyle(
+            fontSize: 30,
+          ),
+        ),
         Slider(
           value: currentValue,
           min: widget.minValue.toDouble(),
           max: widget.maxValue.toDouble(),
-          divisions: (widget.maxValue - widget.minValue)~/widget.step,
+          divisions: (widget.maxValue - widget.minValue) ~/ widget.step,
           onChanged: (double value) {
             setState(() {
               currentValue = value;
@@ -57,6 +63,7 @@ Future<int> pickInt(
   int maxValue,
   int step,
 ) async {
+  int selectedValue = initValue;
   int chosenValue = initValue;
   await showDialog<void>(
     context: context,
@@ -68,9 +75,29 @@ Future<int> pickInt(
           maxValue: maxValue,
           step: step,
           setValue: (int value) {
-            chosenValue = value;
+            selectedValue = value;
           },
         ),
+        actionsAlignment: MainAxisAlignment.center,
+        actions: [
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: const Text(
+              "Annuler",
+            ),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              chosenValue = selectedValue;
+              Navigator.pop(context);
+            },
+            child: const Text(
+              "Valider",
+            ),
+          ),
+        ],
       );
     },
   );

@@ -1,5 +1,4 @@
 import 'dart:math';
-import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:morse_trainer/global.dart';
@@ -8,9 +7,9 @@ import 'package:morse_trainer/models/preferences.dart';
 
 Future<void> playWord(String word) async {
   for (int i = 0; i < word.length; i++) {
-    await morseAlphabet[word[i]]?.play();
+    morseAlphabet[word[i]]?.play();
     await Future.delayed(morseAlphabet[word[i]]!.duration);
-    await Future.delayed(const Duration(milliseconds: 300));
+    await Future.delayed(const Duration(milliseconds: 200));
   }
 }
 
@@ -21,7 +20,7 @@ class GuessWordPage extends StatefulWidget {
 }
 
 class _GuessWordPageState extends State<GuessWordPage> {
-  final int numberWords = 20;
+  final int numberWords = preferences["guessWordNumberOfWords"]!;
   final Random randomGenerator = Random();
   late String wordToFind;
   late String wordToFindFormatted;
@@ -90,7 +89,6 @@ class _GuessWordPageState extends State<GuessWordPage> {
   }
 
   Future<void> onGuess() async {
-    print(wordToFindFormatted);
     if (isRightWord(currentGuess)) {
       await onGoodGuess();
     } else {
@@ -101,8 +99,9 @@ class _GuessWordPageState extends State<GuessWordPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
+      body: SingleChildScrollView(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             const SizedBox(height: 20),
             const Text(
@@ -140,7 +139,6 @@ class _GuessWordPageState extends State<GuessWordPage> {
               controller: textEditingController,
               textInputAction: TextInputAction.send,
               keyboardType: TextInputType.text,
-              enableSuggestions: false,
               textAlign: TextAlign.center,
               decoration: InputDecoration(
                 border: const OutlineInputBorder(),
@@ -190,7 +188,7 @@ class _GuessWordPageState extends State<GuessWordPage> {
             ),
             const Divider(height: 20),
             Text(
-              "Nombre de réussites d'affilées : $streak\nMeilleur score : ${preferences["guessLetterHighScore"]}",
+              "Nombre de réussites d'affilées : $streak\nMeilleur score : ${preferences["guessWordHighScore"]}",
               textAlign: TextAlign.center,
               style: const TextStyle(
                 fontSize: 20,

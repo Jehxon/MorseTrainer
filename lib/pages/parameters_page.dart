@@ -48,7 +48,7 @@ class _ParameterPageState extends State<ParameterPage> {
               });
             },
             title: const Text(
-                "Nombre de choix disponibles dans le mode 'Reconnaître'"),
+                "Nombre de choix disponibles dans le mode 'Quelle est la lettre ?'"),
             trailing: Text("${preferences["guessLetterNumberOfChoice"]}"),
           ),
           const Divider(),
@@ -66,7 +66,7 @@ class _ParameterPageState extends State<ParameterPage> {
               });
             },
             title: const Text(
-                "Afficher le motif du son dans le mode 'Reconnaître'"),
+                "Afficher le motif du son dans le mode 'Quelle est la lettre ?'"),
             trailing: Checkbox(
               value: preferences["guessLetterShowSound"] == 1,
               onChanged: (bool? value) {
@@ -77,6 +77,24 @@ class _ParameterPageState extends State<ParameterPage> {
                 });
               },
             ),
+          ),
+          const Divider(),
+          ListTile(
+            leading: const Icon(
+              Ionicons.list,
+            ),
+            onTap: () async {
+              int n = await pickInt(
+                  context, preferences["guessWordNumberOfWords"]!, 10, frenchDict.length, 10);
+              setState(() {
+                preferences["guessWordNumberOfWords"] = n;
+                savePreferences();
+              });
+            },
+            title: const Text(
+                "Nombre de mots possibles dans le mode 'Quel est le mot ?'"),
+            subtitle: const Text("Les mots possibles sont les plus fréquents de la langue française"),
+            trailing: Text("${preferences["guessWordNumberOfWords"]}"),
           ),
         ],
       ),
