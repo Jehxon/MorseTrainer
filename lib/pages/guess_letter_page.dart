@@ -86,6 +86,7 @@ class _GuessLetterPageState extends State<GuessLetterPage> {
   @override
   void initState() {
     letterToFind = "";
+    streak = preferences["guessLetterCurrentScore"]!;
     drawNewLetterToGuess();
     super.initState();
   }
@@ -126,7 +127,6 @@ class _GuessLetterPageState extends State<GuessLetterPage> {
       });
       if (streak > preferences["guessLetterHighScore"]!) {
         preferences["guessLetterHighScore"] = streak;
-        savePreferences();
       }
       await audioPlayer.play("sounds/correct_guess.mp3");
       await Future.delayed(const Duration(seconds: 1));
@@ -138,6 +138,8 @@ class _GuessLetterPageState extends State<GuessLetterPage> {
       });
       await audioPlayer.play("sounds/wrong_guess.mp3");
     }
+    preferences["guessLetterCurrentScore"] = streak;
+    savePreferences();
   }
 
   @override

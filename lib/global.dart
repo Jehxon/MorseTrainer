@@ -10,12 +10,20 @@ List<Function(Color)> colorChangeCallbacks = [];
 
 Map<String, int> preferences = {
   "appColor": Colors.deepOrange.value,
+
   "guessLetterNumberOfChoice": 8,
-  "guessWordNumberOfWords": 20,
+  "guessLetterCurrentScore": 0,
   "guessLetterHighScore": 0,
   "guessLetterShowSound": 1,
+
   "guessSoundHighScore": 0,
+  "guessSoundCurrentScore": 0,
+  "guessSoundCurrentSound": 0,
+
+  "guessWordNumberOfWords": 20,
   "guessWordHighScore": 0,
+  "guessWordCurrentScore": 0,
+  "guessWordCurrentWord": 0,
 };
 
 List<String> frenchDict = [];

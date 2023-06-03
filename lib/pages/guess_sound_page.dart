@@ -20,7 +20,10 @@ class _GuessSoundPageState extends State<GuessSoundPage> {
 
   @override
   void initState() {
-    drawNewSoundToGuess();
+    letterToFind = alphabet[preferences["guessSoundCurrentSound"]!];
+    currentGuess = "";
+    correctGuess = false;
+    streak = preferences["guessSoundCurrentScore"]!;
     super.initState();
   }
 
@@ -37,33 +40,44 @@ class _GuessSoundPageState extends State<GuessSoundPage> {
   }
 
   String randomLetter() {
-    return alphabet[randomGenerator.nextInt(alphabet.length)];
+    int n = randomGenerator.nextInt(alphabet.length);
+    preferences["guessSoundCurrentSound"] = n;
+    return alphabet[n];
   }
 
   bool isRightSound(String sound) {
     return sound == morseAlphabet[letterToFind]!.sound;
   }
 
+  Future<void> onGoodGuess() async {
+    setState(() {
+      streak += 1;
+      correctGuess = true;
+    });
+    if (streak > preferences["guessSoundHighScore"]!) {
+      preferences["guessSoundHighScore"] = streak;
+    }
+    await audioPlayer.play("sounds/correct_guess.mp3");
+    await Future.delayed(const Duration(seconds: 1));
+    drawNewSoundToGuess();
+  }
+
+  Future<void> onWrongGuess() async {
+    setState(() {
+      streak = 0;
+      currentGuess = "";
+    });
+    await audioPlayer.play("sounds/wrong_guess.mp3");
+  }
+
   Future<void> onGuess() async {
     if (isRightSound(currentGuess)) {
-      setState(() {
-        streak += 1;
-        correctGuess = true;
-      });
-      if (streak > preferences["guessSoundHighScore"]!) {
-        preferences["guessSoundHighScore"] = streak;
-        savePreferences();
-      }
-      await audioPlayer.play("sounds/correct_guess.mp3");
-      await Future.delayed(const Duration(seconds: 1));
-      drawNewSoundToGuess();
+      await onGoodGuess();
     } else {
-      setState(() {
-        streak = 0;
-        currentGuess = "";
-      });
-      await audioPlayer.play("sounds/wrong_guess.mp3");
+      await onWrongGuess();
     }
+    preferences["guessSoundCurrentScore"] = streak;
+    savePreferences();
   }
 
   @override
@@ -170,11 +184,31 @@ class _GuessSoundPageState extends State<GuessSoundPage> {
                     maximumSize: MaterialStatePropertyAll<Size>(Size(150, 200)),
                   ),
                   onPressed: () {
-                    onGuess();
+                    if(!correctGuess){
+                      onGuess();
+                    }
                   },
                   child: const Text("Valider"),
                 ),
               ],
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              style: const ButtonStyle(
+                maximumSize: MaterialStatePropertyAll<Size>(Size(150, 200)),
+              ),
+              onPressed: () async {
+                if(!correctGuess){
+                  currentGuess = "";
+                  await onGuess();
+                  setState(() {
+                    currentGuess = morseAlphabet[letterToFind]!.sound;
+                  });
+                  await Future.delayed(const Duration(seconds: 1));
+                  drawNewSoundToGuess();
+                }
+              },
+              child: const Text("Abandonner"),
             ),
             const Divider(height: 20),
             Text(

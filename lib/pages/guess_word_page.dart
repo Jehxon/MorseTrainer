@@ -31,10 +31,13 @@ class _GuessWordPageState extends State<GuessWordPage> {
 
   @override
   void initState() {
-    wordToFind = "";
-    wordToFindFormatted = "";
-    drawNewWordToGuess();
+    wordToFind = frenchDict[preferences["guessWordCurrentWord"]!];
+    wordToFindFormatted = formatWord(wordToFind);
+    streak = preferences["guessWordCurrentScore"]!;
+    currentGuess = "";
+    correctGuess = false;
     super.initState();
+    playWord(wordToFindFormatted);
   }
 
   @override
@@ -60,6 +63,7 @@ class _GuessWordPageState extends State<GuessWordPage> {
 
   String randomWord() {
     int n = min(numberWords, frenchDict.length);
+    preferences["guessWordCurrentWord"] = n;
     return frenchDict[randomGenerator.nextInt(n)];
   }
 
@@ -74,7 +78,6 @@ class _GuessWordPageState extends State<GuessWordPage> {
     });
     if (streak > preferences["guessWordHighScore"]!) {
       preferences["guessWordHighScore"] = streak;
-      savePreferences();
     }
     await audioPlayer.play("sounds/correct_guess.mp3");
     await Future.delayed(const Duration(seconds: 1));
@@ -94,6 +97,8 @@ class _GuessWordPageState extends State<GuessWordPage> {
     } else {
       await onWrongGuess();
     }
+    preferences["guessWordCurrentScore"] = streak;
+    savePreferences();
   }
 
   @override
@@ -164,13 +169,16 @@ class _GuessWordPageState extends State<GuessWordPage> {
                     maximumSize: MaterialStatePropertyAll<Size>(Size(150, 200)),
                   ),
                   onPressed: () async {
-                    setState(() {
-                      textEditingController.clear();
-                      textEditingController.text = wordToFind;
-                    });
-                    await onWrongGuess();
-                    await Future.delayed(const Duration(seconds: 1));
-                    drawNewWordToGuess();
+                    if(!correctGuess){
+                      currentGuess = "";
+                      await onGuess();
+                      setState(() {
+                        textEditingController.clear();
+                        textEditingController.text = wordToFind;
+                      });
+                      await Future.delayed(const Duration(seconds: 1));
+                      drawNewWordToGuess();
+                    }
                   },
                   child: const Text("Abandonner"),
                 ),
@@ -180,7 +188,9 @@ class _GuessWordPageState extends State<GuessWordPage> {
                     maximumSize: MaterialStatePropertyAll<Size>(Size(150, 200)),
                   ),
                   onPressed: () {
-                    onGuess();
+                    if(!correctGuess){
+                      onGuess();
+                    }
                   },
                   child: const Text("Valider"),
                 ),
