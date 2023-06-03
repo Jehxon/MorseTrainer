@@ -3,6 +3,7 @@ import 'package:ionicons/ionicons.dart';
 import 'package:morse_trainer/global.dart';
 import 'package:morse_trainer/pickers/color_picker.dart';
 import 'package:morse_trainer/pickers/int_picker.dart';
+import 'package:morse_trainer/pickers/double_picker.dart';
 import 'package:morse_trainer/models/preferences.dart';
 
 class ParameterPage extends StatefulWidget {
@@ -15,10 +16,19 @@ class ParameterPage extends StatefulWidget {
 class _ParameterPageState extends State<ParameterPage> {
   @override
   Widget build(BuildContext context) {
+    const TextStyle categoryStyle = TextStyle(
+      fontWeight: FontWeight.bold,
+      fontSize: 16.0,
+    );
     return Scaffold(
       body: ListView(
         padding: const EdgeInsets.only(top: 10, right: 30, left: 30),
         children: [
+          const Text(
+            "Général",
+            style: categoryStyle,
+          ),
+          const SizedBox(height: 5,),
           ListTile(
             leading: const Icon(Icons.color_lens),
             title: const Text('Changer le thème'),
@@ -34,7 +44,28 @@ class _ParameterPageState extends State<ParameterPage> {
               color: Color(preferences["appColor"]!),
             ),
           ),
-          const Divider(),
+          ListTile(
+            leading: const Icon(
+              Ionicons.play_forward_circle_sharp,
+            ),
+            onTap: () async {
+              double playBackSpeed = await pickDouble(
+                  context, preferences["playBackSpeed"]!/10.toDouble(), 0.5, 3.0, 0.1);
+              setState(() {
+                preferences["playBackSpeed"] = (playBackSpeed*10).toInt();
+                savePreferences();
+              });
+            },
+            title: const Text(
+                "Vitesse de lecture des lettres"),
+            trailing: Text("${preferences["playBackSpeed"]!/10}"),
+          ),
+          const Divider(height: 30.0,),
+          const Text(
+            "Mode 'Quelle est la lettre ?'",
+            style: categoryStyle,
+          ),
+          const SizedBox(height: 5,),
           ListTile(
             leading: const Icon(
               Ionicons.grid,
@@ -47,11 +78,9 @@ class _ParameterPageState extends State<ParameterPage> {
                 savePreferences();
               });
             },
-            title: const Text(
-                "Nombre de choix disponibles dans le mode 'Quelle est la lettre ?'"),
+            title: const Text("Nombre de propositions",),
             trailing: Text("${preferences["guessLetterNumberOfChoice"]}"),
           ),
-          const Divider(),
           ListTile(
             leading: Icon(
               preferences["guessLetterShowSound"] == 0
@@ -66,7 +95,7 @@ class _ParameterPageState extends State<ParameterPage> {
               });
             },
             title: const Text(
-                "Afficher le motif du son dans le mode 'Quelle est la lettre ?'"),
+                "Afficher le motif du son"),
             trailing: Checkbox(
               value: preferences["guessLetterShowSound"] == 1,
               onChanged: (bool? value) {
@@ -78,7 +107,40 @@ class _ParameterPageState extends State<ParameterPage> {
               },
             ),
           ),
-          const Divider(),
+          ListTile(
+            leading: const Text(
+              "0..9",
+              style: TextStyle(
+                color: Colors.grey,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            onTap: () {
+              setState(() {
+                preferences["guessLetterAddNumbersAndSpecialCharacters"] =
+                    1 - preferences["guessLetterAddNumbersAndSpecialCharacters"]!;
+                savePreferences();
+              });
+            },
+            title: const Text(
+                "Inclure les nombres et caractères spéciaux"),
+            trailing: Checkbox(
+              value: preferences["guessLetterAddNumbersAndSpecialCharacters"] == 1,
+              onChanged: (bool? value) {
+                setState(() {
+                  preferences["guessLetterAddNumbersAndSpecialCharacters"] =
+                      1 - preferences["guessLetterAddNumbersAndSpecialCharacters"]!;
+                  savePreferences();
+                });
+              },
+            ),
+          ),
+          const Divider(height: 30.0,),
+          const Text(
+            "Mode 'Quel est le mot ?'",
+            style: categoryStyle,
+          ),
+          const SizedBox(height: 5,),
           ListTile(
             leading: const Icon(
               Ionicons.list,
@@ -92,9 +154,26 @@ class _ParameterPageState extends State<ParameterPage> {
               });
             },
             title: const Text(
-                "Nombre de mots possibles dans le mode 'Quel est le mot ?'"),
-            subtitle: const Text("Les mots possibles sont les plus fréquents de la langue française"),
+                "Nombre de mots dans le dictionnaire"),
+            subtitle: Text("Les mots sont les ${preferences["guessWordNumberOfWords"]} mots les plus fréquents dans la langue française."),
             trailing: Text("${preferences["guessWordNumberOfWords"]}"),
+          ),
+          ListTile(
+            leading: const Icon(
+              Ionicons.hourglass_sharp,
+            ),
+            onTap: () async {
+              int betweenLettersTime = await pickInt(
+                  context, preferences["betweenLettersTempo"]!, 3, 7, 1);
+              setState(() {
+                preferences["betweenLettersTempo"] = betweenLettersTime;
+                savePreferences();
+              });
+            },
+            title: const Text(
+                "Temps entre 2 lettres"),
+            subtitle: const Text("Un temps est le temps d'un '\u2022'. Un '-' dure 2 temps. La valeur par défaut est 3."),
+            trailing: Text("${preferences["betweenLettersTempo"]}"),
           ),
         ],
       ),

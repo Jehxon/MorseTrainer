@@ -1,12 +1,24 @@
 import 'package:audioplayers/audioplayers.dart';
 
 class Audio {
-  static final AudioPlayer player = AudioPlayer();
+  final AudioPlayer player = AudioPlayer();
+  double playBackRate = 1.0;
+
+  Audio(){
+    player.setPlayerMode(PlayerMode.lowLatency);
+  }
+
+  void setSpeed(double speed) {
+    playBackRate = speed;
+  }
+
+  void setSource(assetPath) {
+    player.setSource(AssetSource(assetPath));
+  }
+
   Future<void> play(String assetPath) async {
-    if(player.state == PlayerState.playing){
-      await player.stop();
-    }
     await player.play(AssetSource(assetPath));
+    await player.setPlaybackRate(playBackRate);
   }
 }
 

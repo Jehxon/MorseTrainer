@@ -6,10 +6,12 @@ import 'package:morse_trainer/models/morse_alphabet.dart';
 import 'package:morse_trainer/models/preferences.dart';
 
 Future<void> playWord(String word) async {
+  double speedFactor = 10/preferences["playBackSpeed"]!;
+  int betweenLettersTempo = (preferences["betweenLettersTempo"]!-1)*100;
   for (int i = 0; i < word.length; i++) {
     morseAlphabet[word[i]]?.play();
-    await Future.delayed(morseAlphabet[word[i]]!.duration);
-    await Future.delayed(const Duration(milliseconds: 200));
+    await Future.delayed(morseAlphabet[word[i]]!.duration * speedFactor);
+    await Future.delayed(Duration(milliseconds: betweenLettersTempo) * speedFactor);
   }
 }
 
@@ -46,7 +48,7 @@ class _GuessWordPageState extends State<GuessWordPage> {
     super.dispose();
   }
 
-  void drawNewWordToGuess() {
+  void drawNewWordToGuess() async {
     setState(() {
       String wordToFindNew = randomWord();
       while (wordToFindNew == wordToFind) {
@@ -58,13 +60,14 @@ class _GuessWordPageState extends State<GuessWordPage> {
       correctGuess = false;
       textEditingController.clear();
     });
-    playWord(wordToFindFormatted);
+    await playWord(wordToFindFormatted);
   }
 
   String randomWord() {
     int n = min(numberWords, frenchDict.length);
-    preferences["guessWordCurrentWord"] = n;
-    return frenchDict[randomGenerator.nextInt(n)];
+    int choice = randomGenerator.nextInt(n);
+    preferences["guessWordCurrentWord"] = choice;
+    return frenchDict[choice];
   }
 
   bool isRightWord(String word) {
@@ -120,8 +123,8 @@ class _GuessWordPageState extends State<GuessWordPage> {
               style: const ButtonStyle(
                 maximumSize: MaterialStatePropertyAll<Size>(Size(140, 100)),
               ),
-              onPressed: () {
-                playWord(wordToFindFormatted);
+              onPressed: () async {
+                await playWord(wordToFindFormatted);
               },
               child: const Row(
                 mainAxisAlignment: MainAxisAlignment.center,

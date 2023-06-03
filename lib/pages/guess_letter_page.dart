@@ -81,10 +81,11 @@ class _GuessLetterPageState extends State<GuessLetterPage> {
   late List<String> choicesLetters;
   late List<ChoiceState> choicesStates;
   int streak = 0;
-  static List<int> numbers = [for (int i = 0; i < alphabet.length; i++) i];
+  late List<int> numbers;
 
   @override
   void initState() {
+    numbers = [for (int i = 0; i < (preferences["guessLetterAddNumbersAndSpecialCharacters"]! == 0 ? 26 : alphabet.length) ; i++) i];
     letterToFind = "";
     streak = preferences["guessLetterCurrentScore"]!;
     drawNewLetterToGuess();

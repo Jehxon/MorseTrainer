@@ -4,17 +4,21 @@ import 'package:morse_trainer/models/preferences.dart';
 import 'package:morse_trainer/models/audio_players.dart';
 
 final Audio audioPlayer = Audio();
+// final Audio letterAudioPlayer = Audio();
 final FastAudioPlayer fastAudioPlayer = FastAudioPlayer();
 
 List<Function(Color)> colorChangeCallbacks = [];
 
 Map<String, int> preferences = {
   "appColor": Colors.deepOrange.value,
+  "playBackSpeed": 10,
+  "betweenLettersTempo": 3,
 
   "guessLetterNumberOfChoice": 8,
   "guessLetterCurrentScore": 0,
   "guessLetterHighScore": 0,
   "guessLetterShowSound": 1,
+  "guessLetterAddNumbersAndSpecialCharacters": 0,
 
   "guessSoundHighScore": 0,
   "guessSoundCurrentScore": 0,

@@ -24,6 +24,9 @@ class _GuessSoundPageState extends State<GuessSoundPage> {
     currentGuess = "";
     correctGuess = false;
     streak = preferences["guessSoundCurrentScore"]!;
+    if(preferences["guessLetterAddNumbersAndSpecialCharacters"] == 0 && preferences["guessSoundCurrentSound"]! >= 26){
+      drawNewSoundToGuess();
+    }
     super.initState();
   }
 
@@ -40,7 +43,8 @@ class _GuessSoundPageState extends State<GuessSoundPage> {
   }
 
   String randomLetter() {
-    int n = randomGenerator.nextInt(alphabet.length);
+    int maxNumber = preferences["guessLetterAddNumbersAndSpecialCharacters"]! == 0 ? 26 : alphabet.length;
+    int n = randomGenerator.nextInt(maxNumber);
     preferences["guessSoundCurrentSound"] = n;
     return alphabet[n];
   }
