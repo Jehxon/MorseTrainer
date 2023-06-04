@@ -3,8 +3,7 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:morse_trainer/models/preferences.dart';
 import 'package:morse_trainer/models/audio_players.dart';
 
-final Audio audioPlayer = Audio();
-// final Audio letterAudioPlayer = Audio();
+final GuessAudio audioPlayer = GuessAudio();
 final FastAudioPlayer fastAudioPlayer = FastAudioPlayer();
 
 List<Function(Color)> colorChangeCallbacks = [];

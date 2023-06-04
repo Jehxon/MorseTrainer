@@ -85,14 +85,22 @@ class _GuessLetterPageState extends State<GuessLetterPage> {
 
   @override
   void initState() {
-    numbers = [for (int i = 0; i < (preferences["guessLetterAddNumbersAndSpecialCharacters"]! == 0 ? 26 : alphabet.length) ; i++) i];
+    numbers = [
+      for (int i = 0;
+          i <
+              (preferences["guessLetterAddNumbersAndSpecialCharacters"]! == 0
+                  ? 26
+                  : alphabet.length);
+          i++)
+        i
+    ];
     letterToFind = "";
     streak = preferences["guessLetterCurrentScore"]!;
     drawNewLetterToGuess();
     super.initState();
   }
 
-  void drawNewLetterToGuess() {
+  void drawNewLetterToGuess() async {
     setState(() {
       choicesLetters = randomLetters(numberOfChoices);
       if (choicesLetters.first == letterToFind) {
@@ -105,7 +113,7 @@ class _GuessLetterPageState extends State<GuessLetterPage> {
         for (int i = 0; i < choicesLetters.length; i++) ChoiceState.neutral
       ];
     });
-    morseAlphabet[letterToFind]?.play();
+    await morseAlphabet[letterToFind]?.play();
   }
 
   List<String> randomLetters(int n) {
@@ -121,7 +129,7 @@ class _GuessLetterPageState extends State<GuessLetterPage> {
     if (isRightChoice(choicesLetters[choiceId])) {
       setState(() {
         streak += 1;
-        for(int i = 0; i < choicesStates.length; i++){
+        for (int i = 0; i < choicesStates.length; i++) {
           choicesStates[i] = ChoiceState.wronglyGuessed;
         }
         choicesStates[choiceId] = ChoiceState.correctlyGuessed;
@@ -130,7 +138,6 @@ class _GuessLetterPageState extends State<GuessLetterPage> {
         preferences["guessLetterHighScore"] = streak;
       }
       await audioPlayer.play("sounds/correct_guess.mp3");
-      await Future.delayed(const Duration(seconds: 1));
       drawNewLetterToGuess();
     } else {
       setState(() {
@@ -172,8 +179,8 @@ class _GuessLetterPageState extends State<GuessLetterPage> {
             style: const ButtonStyle(
               maximumSize: MaterialStatePropertyAll<Size>(Size(140, 100)),
             ),
-            onPressed: () {
-              morseAlphabet[letterToFind]?.play();
+            onPressed: () async {
+              await morseAlphabet[letterToFind]?.play();
             },
             child: const Row(
               mainAxisAlignment: MainAxisAlignment.center,

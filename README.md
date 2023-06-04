@@ -14,3 +14,10 @@ The application offers several modes :
 * ***Encode letter mode :*** Find the code for a letter
 * ***Decode word mode :*** Listen to a full word in morse code and write the word
 * Other ideas are coming ! Stay tuned :)
+
+## Known issues
+
+* Slower playback speed are buggy. When setting the playback speed to low value like 0.5, long letters ending with a dot are not played entirely (H for exemple).
+* At high playback rate, the first time playing a word some letters overlap and the result is not audible (and really unpleasant).
+
+If you have any ideas on how to correct these issues please let me know !

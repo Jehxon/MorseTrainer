@@ -13,8 +13,8 @@ class LearningPage extends StatelessWidget {
         itemCount: alphabet.length,
         itemBuilder: (BuildContext context, int index) {
           return ListTile(
-            onTap: () {
-              morseAlphabet[alphabet[index]]?.play();
+            onTap: () async {
+              await morseAlphabet[alphabet[index]]?.play();
             },
             title: Row(
               children: [

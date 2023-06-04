@@ -56,7 +56,7 @@ class Letter {
   late final String sound;
   late final String filename;
   late Duration duration;
-  final Audio audioPlayer = Audio();
+  final LetterAudioPlayer audioPlayer = LetterAudioPlayer();
 
   Letter({required this.name, required this.sound}) {
     duration = Duration.zero;
@@ -89,7 +89,8 @@ class Letter {
   }
 
   Future<void> play() async {
-    audioPlayer.setSpeed(preferences["playBackSpeed"]! / 10);
-    await audioPlayer.play(filename);
+    double speedFactor = 10/preferences["playBackSpeed"]!;
+    await audioPlayer.setSpeed(1 / speedFactor);
+    await audioPlayer.play(filename, duration * speedFactor);
   }
 }

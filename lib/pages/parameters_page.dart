@@ -60,6 +60,34 @@ class _ParameterPageState extends State<ParameterPage> {
                 "Vitesse de lecture des lettres"),
             trailing: Text("${preferences["playBackSpeed"]!/10}"),
           ),
+          ListTile(
+            leading: const Text(
+              "0..9",
+              style: TextStyle(
+                color: Colors.grey,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            onTap: () {
+              setState(() {
+                preferences["guessLetterAddNumbersAndSpecialCharacters"] =
+                    1 - preferences["guessLetterAddNumbersAndSpecialCharacters"]!;
+                savePreferences();
+              });
+            },
+            title: const Text(
+                "Inclure les nombres et caractères spéciaux"),
+            trailing: Checkbox(
+              value: preferences["guessLetterAddNumbersAndSpecialCharacters"] == 1,
+              onChanged: (bool? value) {
+                setState(() {
+                  preferences["guessLetterAddNumbersAndSpecialCharacters"] =
+                      1 - preferences["guessLetterAddNumbersAndSpecialCharacters"]!;
+                  savePreferences();
+                });
+              },
+            ),
+          ),
           const Divider(height: 30.0,),
           const Text(
             "Mode 'Quelle est la lettre ?'",
@@ -107,34 +135,6 @@ class _ParameterPageState extends State<ParameterPage> {
               },
             ),
           ),
-          ListTile(
-            leading: const Text(
-              "0..9",
-              style: TextStyle(
-                color: Colors.grey,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            onTap: () {
-              setState(() {
-                preferences["guessLetterAddNumbersAndSpecialCharacters"] =
-                    1 - preferences["guessLetterAddNumbersAndSpecialCharacters"]!;
-                savePreferences();
-              });
-            },
-            title: const Text(
-                "Inclure les nombres et caractères spéciaux"),
-            trailing: Checkbox(
-              value: preferences["guessLetterAddNumbersAndSpecialCharacters"] == 1,
-              onChanged: (bool? value) {
-                setState(() {
-                  preferences["guessLetterAddNumbersAndSpecialCharacters"] =
-                      1 - preferences["guessLetterAddNumbersAndSpecialCharacters"]!;
-                  savePreferences();
-                });
-              },
-            ),
-          ),
           const Divider(height: 30.0,),
           const Text(
             "Mode 'Quel est le mot ?'",
@@ -155,7 +155,7 @@ class _ParameterPageState extends State<ParameterPage> {
             },
             title: const Text(
                 "Nombre de mots dans le dictionnaire"),
-            subtitle: Text("Les mots sont les ${preferences["guessWordNumberOfWords"]} mots les plus fréquents dans la langue française."),
+            subtitle: Text("Les mots proposés sont les ${preferences["guessWordNumberOfWords"]} mots les plus fréquents dans la langue française."),
             trailing: Text("${preferences["guessWordNumberOfWords"]}"),
           ),
           ListTile(
@@ -172,7 +172,7 @@ class _ParameterPageState extends State<ParameterPage> {
             },
             title: const Text(
                 "Temps entre 2 lettres"),
-            subtitle: const Text("Un temps est le temps d'un '\u2022'. Un '-' dure 2 temps. La valeur par défaut est 3."),
+            subtitle: const Text("Un temps est le temps d'un '\u2022'. Un '-' dure 3 temps. La valeur par défaut est 3."),
             trailing: Text("${preferences["betweenLettersTempo"]}"),
           ),
         ],

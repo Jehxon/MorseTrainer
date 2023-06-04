@@ -1,19 +1,8 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:morse_trainer/global.dart';
 import 'package:morse_trainer/models/morse_alphabet.dart';
 import 'package:morse_trainer/models/preferences.dart';
-
-Future<void> playWord(String word) async {
-  double speedFactor = 10/preferences["playBackSpeed"]!;
-  int betweenLettersTempo = (preferences["betweenLettersTempo"]!-1)*100;
-  for (int i = 0; i < word.length; i++) {
-    morseAlphabet[word[i]]?.play();
-    await Future.delayed(morseAlphabet[word[i]]!.duration * speedFactor);
-    await Future.delayed(Duration(milliseconds: betweenLettersTempo) * speedFactor);
-  }
-}
 
 class GuessWordPage extends StatefulWidget {
   const GuessWordPage({super.key});
@@ -22,8 +11,9 @@ class GuessWordPage extends StatefulWidget {
 }
 
 class _GuessWordPageState extends State<GuessWordPage> {
-  final int numberWords = preferences["guessWordNumberOfWords"]!;
-  final Random randomGenerator = Random();
+  static int numberWords = 0;
+  static List<int> numbers = [];
+  int choice = preferences["guessWordCurrentWord"]!;
   late String wordToFind;
   late String wordToFindFormatted;
   String currentGuess = "";
@@ -33,13 +23,17 @@ class _GuessWordPageState extends State<GuessWordPage> {
 
   @override
   void initState() {
-    wordToFind = frenchDict[preferences["guessWordCurrentWord"]!];
+    choice = preferences["guessWordCurrentWord"]!;
+    if(numberWords != preferences["guessWordNumberOfWords"]){
+      reshuffle();
+    }
+    wordToFind = frenchDict[numbers[choice]];
     wordToFindFormatted = formatWord(wordToFind);
     streak = preferences["guessWordCurrentScore"]!;
     currentGuess = "";
     correctGuess = false;
     super.initState();
-    playWord(wordToFindFormatted);
+    playWord();
   }
 
   @override
@@ -48,11 +42,29 @@ class _GuessWordPageState extends State<GuessWordPage> {
     super.dispose();
   }
 
+  Future<void> playWord() async{
+    double speedFactor = 10/preferences["playBackSpeed"]!;
+    int betweenLettersTempoMs = (preferences["betweenLettersTempo"]!-1)*100;
+    for (int i = 0; i < wordToFindFormatted.length; i++) {
+      await morseAlphabet[wordToFindFormatted[i]]?.play();
+      await Future.delayed(Duration(milliseconds: betweenLettersTempoMs) * speedFactor);
+    }
+  }
+
+  void reshuffle(){
+    numberWords = preferences["guessWordNumberOfWords"]!;
+    numbers = [for (int i = 0; i < numberWords; i++) i];
+    numbers.shuffle();
+    choice = 0;
+    preferences["guessWordCurrentWord"] = 0;
+    savePreferences();
+  }
+
   void drawNewWordToGuess() async {
     setState(() {
-      String wordToFindNew = randomWord();
+      String wordToFindNew = nextRandomWord();
       while (wordToFindNew == wordToFind) {
-        wordToFindNew = randomWord();
+        wordToFindNew = nextRandomWord();
       }
       wordToFind = wordToFindNew;
       wordToFindFormatted = formatWord(wordToFind);
@@ -60,14 +72,14 @@ class _GuessWordPageState extends State<GuessWordPage> {
       correctGuess = false;
       textEditingController.clear();
     });
-    await playWord(wordToFindFormatted);
+    await playWord();
   }
 
-  String randomWord() {
-    int n = min(numberWords, frenchDict.length);
-    int choice = randomGenerator.nextInt(n);
+  String nextRandomWord() {
+    choice = (choice + 1) % numberWords;
     preferences["guessWordCurrentWord"] = choice;
-    return frenchDict[choice];
+    savePreferences();
+    return frenchDict[numbers[choice]];
   }
 
   bool isRightWord(String word) {
@@ -83,7 +95,6 @@ class _GuessWordPageState extends State<GuessWordPage> {
       preferences["guessWordHighScore"] = streak;
     }
     await audioPlayer.play("sounds/correct_guess.mp3");
-    await Future.delayed(const Duration(seconds: 1));
     drawNewWordToGuess();
   }
 
@@ -124,7 +135,7 @@ class _GuessWordPageState extends State<GuessWordPage> {
                 maximumSize: MaterialStatePropertyAll<Size>(Size(140, 100)),
               ),
               onPressed: () async {
-                await playWord(wordToFindFormatted);
+                await playWord();
               },
               child: const Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -174,7 +185,7 @@ class _GuessWordPageState extends State<GuessWordPage> {
                   onPressed: () async {
                     if(!correctGuess){
                       currentGuess = "";
-                      await onGuess();
+                      onGuess();
                       setState(() {
                         textEditingController.clear();
                         textEditingController.text = wordToFind;

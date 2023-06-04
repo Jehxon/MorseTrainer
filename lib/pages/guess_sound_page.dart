@@ -62,7 +62,6 @@ class _GuessSoundPageState extends State<GuessSoundPage> {
       preferences["guessSoundHighScore"] = streak;
     }
     await audioPlayer.play("sounds/correct_guess.mp3");
-    await Future.delayed(const Duration(seconds: 1));
     drawNewSoundToGuess();
   }
 
@@ -87,7 +86,7 @@ class _GuessSoundPageState extends State<GuessSoundPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
+      body: SingleChildScrollView(
         child: Column(
           children: [
             const SizedBox(height: 30),
@@ -204,7 +203,7 @@ class _GuessSoundPageState extends State<GuessSoundPage> {
               onPressed: () async {
                 if(!correctGuess){
                   currentGuess = "";
-                  await onGuess();
+                  onGuess();
                   setState(() {
                     currentGuess = morseAlphabet[letterToFind]!.sound;
                   });
