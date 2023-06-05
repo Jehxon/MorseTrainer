@@ -55,6 +55,7 @@ class _ParameterPageState extends State<ParameterPage> {
                 preferences["playBackSpeed"] = (playBackSpeed*10).toInt();
                 savePreferences();
               });
+              letterAudioPlayer.setSpeed(playBackSpeed);
             },
             title: const Text(
                 "Vitesse de lecture des lettres"),

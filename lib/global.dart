@@ -4,6 +4,7 @@ import 'package:morse_trainer/models/preferences.dart';
 import 'package:morse_trainer/models/audio_players.dart';
 
 final GuessAudio audioPlayer = GuessAudio();
+final LetterAudioPlayer letterAudioPlayer = LetterAudioPlayer();
 final FastAudioPlayer fastAudioPlayer = FastAudioPlayer();
 
 List<Function(Color)> colorChangeCallbacks = [];

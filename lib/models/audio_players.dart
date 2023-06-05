@@ -23,39 +23,22 @@ class GuessAudio {
 }
 
 class LetterAudioPlayer {
-  final AudioPlayer player = AudioPlayer();
+  AudioPlayer player = AudioPlayer();
   double playBackRate = 1.0;
-  static bool playing = false;
-
-  LetterAudioPlayer() {
-    player.onPlayerStateChanged.listen((PlayerState state) {
-      if (state == PlayerState.playing) {
-        playing = true;
-      }
-    });
-  }
 
   Future<void> setSpeed(double speed) async {
     playBackRate = speed;
     await player.setPlaybackRate(speed);
   }
 
-  void setSource(assetPath) {
-    player.setSource(AssetSource(assetPath));
-  }
-
-  Future<void> play(String assetPath, Duration d) async {
-    if (playing) {
-      return;
+  Future<void> play(String assetPath) async {
+    if(player.state == PlayerState.playing){
+      player.stop();
     }
-    DateTime request = DateTime.now();
     await player.play(AssetSource(assetPath));
-    while (!playing) {
+    while (player.state != PlayerState.playing) {
       await Future.delayed(const Duration(milliseconds: 1));
     }
-    DateTime response = DateTime.now();
-    await Future.delayed(d - response.difference(request));
-    playing = false;
   }
 }
 

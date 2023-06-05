@@ -38,6 +38,7 @@ class _MainAppState extends State<MainApp> with WidgetsBindingObserver {
   void getData() async {
     await initPreferences();
     frenchDict = await loadWordListFromAsset("assets/data/french_dict_freq.txt");
+    letterAudioPlayer.setSpeed(preferences["playBackSpeed"]!/10);
     setState(() {
       initialized = true;
       theme = ThemeData(primarySwatch: toMaterialColor(Color(preferences["appColor"]!)));

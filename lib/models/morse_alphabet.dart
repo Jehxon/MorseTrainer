@@ -1,5 +1,4 @@
 import 'package:morse_trainer/global.dart';
-import 'package:morse_trainer/models/audio_players.dart';
 
 const String alphabet = "abcdefghijklmnopqrstuvwxyz0123456789.,?";
 const List<String> morseLetterSounds = [
@@ -56,7 +55,6 @@ class Letter {
   late final String sound;
   late final String filename;
   late Duration duration;
-  final LetterAudioPlayer audioPlayer = LetterAudioPlayer();
 
   Letter({required this.name, required this.sound}) {
     duration = Duration.zero;
@@ -84,13 +82,11 @@ class Letter {
       default:
         filename = "sounds/${name.toUpperCase()}_morse_code.ogg";
     }
-
-    audioPlayer.setSource(filename);
   }
 
   Future<void> play() async {
+    await letterAudioPlayer.play(filename);
     double speedFactor = 10/preferences["playBackSpeed"]!;
-    await audioPlayer.setSpeed(1 / speedFactor);
-    await audioPlayer.play(filename, duration * speedFactor);
+    await Future.delayed(duration * speedFactor);
   }
 }
