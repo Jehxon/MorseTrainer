@@ -39,6 +39,9 @@ dependencies:
   ionicons: ^0.2.2
   shared_preferences: ^2.1.1
   flutter_colorpicker: ^1.0.3
+  ffmpeg_kit_flutter: ^5.1.0
+  ffmpeg_kit_flutter_platform_interface: ^0.2.1
+  flutter_ffmpeg: ^0.4.2
 
 dev_dependencies:
   flutter_test:

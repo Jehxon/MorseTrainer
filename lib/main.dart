@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:morse_trainer/models/preferences.dart';
 import 'home_page.dart';
 import 'package:morse_trainer/global.dart';
+import 'package:morse_trainer/models/sound_generator.dart';
 
 void main() async {
   runApp(const MainApp());
@@ -39,6 +40,7 @@ class _MainAppState extends State<MainApp> with WidgetsBindingObserver {
     await initPreferences();
     frenchDict = await loadWordListFromAsset("assets/data/french_dict_freq.txt");
     letterAudioPlayer.setSpeed(preferences["playBackSpeed"]!/10);
+    generateTone(800, 0.3);
     setState(() {
       initialized = true;
       theme = ThemeData(primarySwatch: toMaterialColor(Color(preferences["appColor"]!)));
