@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:morse_trainer/global.dart';
+import 'package:morse_trainer/models/sound_generator.dart';
 import 'package:morse_trainer/pickers/color_picker.dart';
 import 'package:morse_trainer/pickers/int_picker.dart';
 import 'package:morse_trainer/pickers/double_picker.dart';
@@ -55,11 +56,30 @@ class _ParameterPageState extends State<ParameterPage> {
                 preferences["playBackSpeed"] = (playBackSpeed*10).toInt();
                 savePreferences();
               });
-              letterAudioPlayer.setSpeed(playBackSpeed);
+              SoundGenerator.setSpeed(playBackSpeed);
+              await SoundGenerator.regenerateAtomicSounds();
             },
             title: const Text(
                 "Vitesse de lecture des lettres"),
             trailing: Text("${preferences["playBackSpeed"]!/10}"),
+          ),
+          ListTile(
+            leading: const Icon(
+              Icons.graphic_eq,
+            ),
+            onTap: () async {
+              int frequency = await pickInt(
+                  context, preferences["frequency"]!, 100, 1000, 25);
+              setState(() {
+                preferences["frequency"] = frequency;
+                savePreferences();
+              });
+              SoundGenerator.setFrequency(frequency);
+              await SoundGenerator.regenerateAtomicSounds();
+            },
+            title: const Text(
+                "Fréquence des sons (Hz)"),
+            trailing: Text("${preferences["frequency"]!}"),
           ),
           ListTile(
             leading: const Text(

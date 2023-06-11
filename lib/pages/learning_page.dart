@@ -21,7 +21,7 @@ class LearningPage extends StatelessWidget {
                 Text(alphabet[index].toUpperCase()),
                 const SizedBox(width: 50),
                 Text(
-                  morseLetterSounds[index],
+                  morseLetterSounds[index].replaceAll(" ", "").replaceAll(".", "\u2022"),
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 30,

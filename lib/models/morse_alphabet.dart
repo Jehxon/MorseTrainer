@@ -1,48 +1,49 @@
-import 'package:morse_trainer/global.dart';
+import 'package:morse_trainer/models/audio_players.dart';
+import 'package:morse_trainer/models/sound_generator.dart';
 
 const String alphabet = "abcdefghijklmnopqrstuvwxyz0123456789.,?";
 const List<String> morseLetterSounds = [
-  "\u2022-", // A
-  "-\u2022\u2022\u2022", // B
-  "-\u2022-\u2022", // C
-  "-\u2022\u2022", // D
-  "\u2022", // E
-  "\u2022\u2022-\u2022", // F
-  "--\u2022", // G
-  "\u2022\u2022\u2022\u2022", // H
-  "\u2022\u2022", // I
-  "\u2022---", // J
-  "-\u2022-", // K
-  "\u2022-\u2022\u2022", // L
-  "--", // M
-  "-\u2022", // N
-  "---", // O
-  "\u2022--\u2022", // P
-  "--\u2022-", // Q
-  "\u2022-\u2022", // R
-  "\u2022\u2022\u2022", // S
+  ". -", // A
+  "- . . .", // B
+  "- . - .", // C
+  "- . .", // D
+  ".", // E
+  ". . - .", // F
+  "- - .", // G
+  ". . . .", // H
+  ". .", // I
+  ". - - -", // J
+  "- . -", // K
+  ". - . .", // L
+  "- -", // M
+  "- .", // N
+  "- - -", // O
+  ". - - .", // P
+  "- - . -", // Q
+  ". - .", // R
+  ". . .", // S
   "-", // T
-  "\u2022\u2022-", // U
-  "\u2022\u2022\u2022-", // V
-  "\u2022--", // W
-  "-\u2022\u2022-", // X
-  "-\u2022--", // Y
-  "--\u2022\u2022", // Z
+  ". . -", // U
+  ". . . -", // V
+  ". - -", // W
+  "- . . -", // X
+  "- . - -", // Y
+  "- - . .", // Z
 
-  "-----", // 0
-  "\u2022----", // 1
-  "\u2022\u2022---", // 2
-  "\u2022\u2022\u2022--", // 3
-  "\u2022\u2022\u2022\u2022-", // 4
-  "\u2022\u2022\u2022\u2022\u2022", // 5
-  "-\u2022\u2022\u2022\u2022", // 6
-  "--\u2022\u2022\u2022", // 7
-  "---\u2022\u2022", // 8
-  "----\u2022", // 9
+  "- - - - -", // 0
+  ". - - - -", // 1
+  ". . - - -", // 2
+  ". . . - -", // 3
+  ". . . . -", // 4
+  ". . . . .", // 5
+  "- . . . .", // 6
+  "- - . . .", // 7
+  "- - - . .", // 8
+  "- - - - .", // 9
 
-  "\u2022-\u2022-\u2022-", // .
-  "--\u2022\u2022--", // ,
-  "\u2022\u2022--\u2022\u2022", // ?
+  ". - . - . -", // .
+  "- - . . - -", // ,
+  ". . - - . .", // ?
 ];
 
 Map<String, Letter> morseAlphabet = {
@@ -53,40 +54,15 @@ Map<String, Letter> morseAlphabet = {
 class Letter {
   late final String name;
   late final String sound;
-  late final String filename;
-  late Duration duration;
 
-  Letter({required this.name, required this.sound}) {
-    duration = Duration.zero;
-    for (int i = 0; i < sound.length; i++) {
-      switch (sound[i]) {
-        case "\u2022":
-          duration += const Duration(milliseconds: 100);
-        case "-":
-          duration += const Duration(milliseconds: 300);
-        default:
-      }
-    }
-    duration += Duration(milliseconds: 100 * sound.length);
-
-    switch (name){
-      case ".":
-        filename = "sounds/period_morse_code.ogg";
-        break;
-      case ",":
-        filename = "sounds/comma_morse_code.ogg";
-        break;
-      case "?":
-        filename = "sounds/question_mark_morse_code.ogg";
-        break;
-      default:
-        filename = "sounds/${name.toUpperCase()}_morse_code.ogg";
-    }
-  }
+  Letter({required this.name, required this.sound});
 
   Future<void> play() async {
-    await letterAudioPlayer.play(filename);
-    double speedFactor = 10/preferences["playBackSpeed"]!;
-    await Future.delayed(duration * speedFactor);
+    await SoundGenerator.generateSoundFile(sound);
+    await LetterAudioPlayer.play();
+  }
+
+  String get displaySound{
+    return sound.replaceAll(" ", "").replaceAll(".", "\u2022");
   }
 }

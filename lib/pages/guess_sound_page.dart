@@ -50,7 +50,7 @@ class _GuessSoundPageState extends State<GuessSoundPage> {
   }
 
   bool isRightSound(String sound) {
-    return sound == morseAlphabet[letterToFind]!.sound;
+    return sound == morseAlphabet[letterToFind]!.displaySound;
   }
 
   Future<void> onGoodGuess() async {
@@ -205,7 +205,7 @@ class _GuessSoundPageState extends State<GuessSoundPage> {
                   currentGuess = "";
                   onGuess();
                   setState(() {
-                    currentGuess = morseAlphabet[letterToFind]!.sound;
+                    currentGuess = morseAlphabet[letterToFind]!.displaySound;
                   });
                   await Future.delayed(const Duration(seconds: 1));
                   drawNewSoundToGuess();

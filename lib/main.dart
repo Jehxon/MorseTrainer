@@ -39,8 +39,14 @@ class _MainAppState extends State<MainApp> with WidgetsBindingObserver {
   void getData() async {
     await initPreferences();
     frenchDict = await loadWordListFromAsset("assets/data/french_dict_freq.txt");
-    letterAudioPlayer.setSpeed(preferences["playBackSpeed"]!/10);
-    generateTone(800, 0.3);
+    SoundGenerator.setSpeed(preferences["playBackSpeed"]!/10);
+    SoundGenerator.setFrequency(preferences["frequency"]!);
+    outputFile = await getFilePath("current_sound.wav");
+    longDashFile = await getFilePath("long_dash.wav");
+    dashFile = await getFilePath("dash.wav");
+    dotFile = await getFilePath("dot.wav");
+    silenceFile = await getFilePath("silence.wav");
+    await SoundGenerator.regenerateAtomicSounds();
     setState(() {
       initialized = true;
       theme = ThemeData(primarySwatch: toMaterialColor(Color(preferences["appColor"]!)));

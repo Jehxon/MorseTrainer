@@ -155,7 +155,7 @@ class _GuessLetterPageState extends State<GuessLetterPage> {
     Widget soundShown = switch (preferences["guessLetterShowSound"]!) {
       0 => const Icon(Ionicons.eye_off),
       _ => Text(
-          morseAlphabet[letterToFind]!.sound,
+          morseAlphabet[letterToFind]!.displaySound,
           style: const TextStyle(
             fontSize: 50,
             fontWeight: FontWeight.bold,

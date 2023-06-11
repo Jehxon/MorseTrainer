@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:morse_trainer/global.dart';
+import 'package:morse_trainer/models/audio_players.dart';
 import 'package:morse_trainer/models/morse_alphabet.dart';
 import 'package:morse_trainer/models/preferences.dart';
+import 'package:morse_trainer/models/sound_generator.dart';
 
 class GuessWordPage extends StatefulWidget {
   const GuessWordPage({super.key});
@@ -43,12 +45,14 @@ class _GuessWordPageState extends State<GuessWordPage> {
   }
 
   Future<void> playWord() async{
-    double speedFactor = 10/preferences["playBackSpeed"]!;
-    int betweenLettersTempoMs = (preferences["betweenLettersTempo"]!-1)*100;
-    for (int i = 0; i < wordToFindFormatted.length; i++) {
-      await morseAlphabet[wordToFindFormatted[i]]?.play();
-      await Future.delayed(Duration(milliseconds: betweenLettersTempoMs) * speedFactor);
+    String sound = morseAlphabet[wordToFindFormatted[0]]!.sound;
+    String betweenWordSound = " " * preferences["betweenLettersTempo"]!;
+    for (int i = 1; i < wordToFindFormatted.length; i++) {
+      // Generated the sound
+      sound = sound + betweenWordSound + morseAlphabet[wordToFindFormatted[i]]!.sound;
     }
+    await SoundGenerator.generateSoundFile(sound);
+    await LetterAudioPlayer.play();
   }
 
   void reshuffle(){

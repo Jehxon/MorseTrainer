@@ -1,4 +1,5 @@
 import 'package:audioplayers/audioplayers.dart';
+import 'package:morse_trainer/global.dart';
 
 class GuessAudio {
   final AudioPlayer player = AudioPlayer();
@@ -23,20 +24,17 @@ class GuessAudio {
 }
 
 class LetterAudioPlayer {
-  AudioPlayer player = AudioPlayer();
-  double playBackRate = 1.0;
+  static AudioPlayer player = AudioPlayer();
 
-  Future<void> setSpeed(double speed) async {
-    playBackRate = speed;
-    await player.setPlaybackRate(speed);
-  }
-
-  Future<void> play(String assetPath) async {
+  static Future<void> play() async {
     if(player.state == PlayerState.playing){
-      player.stop();
+      await player.stop();
     }
-    await player.play(AssetSource(assetPath));
+    await player.play(DeviceFileSource(outputFile));
     while (player.state != PlayerState.playing) {
+      await Future.delayed(const Duration(milliseconds: 1));
+    }
+    while (player.state == PlayerState.playing) {
       await Future.delayed(const Duration(milliseconds: 1));
     }
   }
@@ -46,7 +44,7 @@ class FastAudioPlayer {
   static final AudioPlayer player = AudioPlayer();
   FastAudioPlayer() {
     player.setReleaseMode(ReleaseMode.loop);
-    player.setSource(AssetSource("sounds/beep.mp3"));
+    player.setSource(DeviceFileSource(longDashFile));
   }
 
   void play() async {

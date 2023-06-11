@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:path_provider/path_provider.dart';
 import 'package:morse_trainer/models/preferences.dart';
 import 'package:morse_trainer/models/audio_players.dart';
 
 final GuessAudio audioPlayer = GuessAudio();
-final LetterAudioPlayer letterAudioPlayer = LetterAudioPlayer();
 final FastAudioPlayer fastAudioPlayer = FastAudioPlayer();
 
 List<Function(Color)> colorChangeCallbacks = [];
@@ -12,6 +12,7 @@ List<Function(Color)> colorChangeCallbacks = [];
 Map<String, int> preferences = {
   "appColor": Colors.deepOrange.value,
   "playBackSpeed": 10,
+  "frequency": 800,
   "betweenLettersTempo": 3,
 
   "guessLetterNumberOfChoice": 8,
@@ -31,6 +32,11 @@ Map<String, int> preferences = {
 };
 
 List<String> frenchDict = [];
+String outputFile = "";
+String longDashFile = "";
+String dashFile = "";
+String dotFile = "";
+String silenceFile = "";
 
 void addThemeChangeCallback(Function(Color) func) {
   colorChangeCallbacks.add(func);
@@ -57,7 +63,17 @@ String formatWord(String str) {
 }
 
 Future<List<String>> loadWordListFromAsset(String assetPath) async {
-  String fileData = await rootBundle.loadString(assetPath);
-  List<String> wordList = fileData.trim().split('\n');
+  final String fileData = await rootBundle.loadString(assetPath);
+  final List<String> wordList = fileData.trim().split('\n');
   return wordList;
+}
+
+Future<String> get _localPath async {
+  final directory = await getApplicationDocumentsDirectory();
+  return directory.path;
+}
+
+Future<String> getFilePath(String file) async {
+  final String path = await _localPath;
+  return "$path/$file";
 }
