@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:morse_trainer/global.dart';
 import 'package:morse_trainer/models/audio_players.dart';
@@ -29,7 +30,7 @@ class _GuessWordPageState extends State<GuessWordPage> {
     if(numberWords != preferences["guessWordNumberOfWords"]){
       reshuffle();
     }
-    wordToFind = frenchDict[numbers[choice]];
+    wordToFind = wordsDict[numbers[choice]];
     wordToFindFormatted = formatWord(wordToFind);
     streak = preferences["guessWordCurrentScore"]!;
     currentGuess = "";
@@ -83,7 +84,7 @@ class _GuessWordPageState extends State<GuessWordPage> {
     choice = (choice + 1) % numberWords;
     preferences["guessWordCurrentWord"] = choice;
     savePreferences();
-    return frenchDict[numbers[choice]];
+    return wordsDict[numbers[choice]];
   }
 
   bool isRightWord(String word) {
@@ -127,9 +128,9 @@ class _GuessWordPageState extends State<GuessWordPage> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             const SizedBox(height: 20),
-            const Text(
-              "Quel est ce mot ?",
-              style: TextStyle(
+            Text(
+              AppLocalizations.of(context)!.guessWordTitle,
+              style: const TextStyle(
                 fontSize: 30,
               ),
             ),
@@ -141,12 +142,12 @@ class _GuessWordPageState extends State<GuessWordPage> {
               onPressed: () async {
                 await playWord();
               },
-              child: const Row(
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text("Écouter"),
-                  SizedBox(width: 10),
-                  Icon(Ionicons.musical_notes_sharp),
+                  Text(AppLocalizations.of(context)!.listenButton),
+                  const SizedBox(width: 10),
+                  const Icon(Ionicons.musical_notes_sharp),
                 ],
               ),
             ),
@@ -198,7 +199,7 @@ class _GuessWordPageState extends State<GuessWordPage> {
                       drawNewWordToGuess();
                     }
                   },
-                  child: const Text("Abandonner"),
+                  child: Text(AppLocalizations.of(context)!.giveUp),
                 ),
                 const SizedBox(width: 20),
                 ElevatedButton(
@@ -210,13 +211,13 @@ class _GuessWordPageState extends State<GuessWordPage> {
                       onGuess();
                     }
                   },
-                  child: const Text("Valider"),
+                  child: Text(AppLocalizations.of(context)!.confirm),
                 ),
               ],
             ),
             const Divider(height: 20),
             Text(
-              "Nombre de réussites d'affilées : $streak\nMeilleur score : ${preferences["guessWordHighScore"]}",
+              "${AppLocalizations.of(context)!.nbSuccessiveGoodGuesses} : $streak\n${AppLocalizations.of(context)!.highscore} : ${preferences["guessWordHighScore"]}",
               textAlign: TextAlign.center,
               style: const TextStyle(
                 fontSize: 20,

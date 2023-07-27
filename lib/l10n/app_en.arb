@@ -1,0 +1,38 @@
+{
+    "dictPath": "assets/data/english_dict_freq.txt",
+
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "giveUp": "Give up",
+    "listenButton": "Listen",
+    "nbSuccessiveGoodGuesses": "Current score",
+    "highscore": "Highscore",
+
+    "guessLetterTitle": "Find the letter",
+
+    "guessSoundTitle": "Find the sound of the letter",
+    "pressButton": "Press here !",
+
+    "guessWordTitle": "Find the word",
+
+    "categoryParameter": "Mode",
+    "generalParameters": "General",
+    "themeParameter": "Change theme",
+    "playBackSpeedParameter": "Playback speed",
+    "soundFrequencyParameter": "Sound pitch (Hz)",
+    "includeNumbersAndSpecialCharactersParameter": "Include numbers and special characters",
+
+    "numberOfGuesses": "Number of choices",
+    "showLetterSound": "Show sound pattern",
+
+    "nbWordsParameter": "Number of words in the dictionary",
+    "nbWordsParameterSubtitle1": "The words are chosen among the",
+    "nbWordsParameterSubtitle2": "most frequent words in the english language.",
+    "tempoBetweenLetters": "Tempo between 2 letters",
+    "tempoBetweenLettersSubtitle": "One tempo is the time of a '\u2022'. One '-' lasts 3 tempos. Increase this if you have trouble knowing when a letter ends. Default value is 3.",
+
+    "pickColor": "Pick a color",
+
+    "parameters": "Parameters",
+    "previousPage": "Go back"
+}

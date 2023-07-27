@@ -1,0 +1,38 @@
+{
+    "dictPath": "assets/data/french_dict_freq.txt",
+
+    "cancel": "Annuler",
+    "confirm": "Valider",
+    "giveUp": "Abandonner",
+    "listenButton": "Écouter",
+    "nbSuccessiveGoodGuesses": "Score",
+    "highscore": "Meilleur score",
+
+    "guessLetterTitle": "Quelle est cette lettre ?",
+
+    "guessSoundTitle": "Quel son fait cette lettre ?",
+    "pressButton": "Appuyez ici !",
+
+    "guessWordTitle": "Quel est ce mot ?",
+
+    "categoryParameter": "Mode",
+    "generalParameters": "Général",
+    "themeParameter": "Changer le thème",
+    "playBackSpeedParameter": "Vitesse de lecture des lettres",
+    "soundFrequencyParameter": "Fréquence des sons (Hz)",
+    "includeNumbersAndSpecialCharactersParameter": "Inclure les nombres et caractères spéciaux",
+
+    "numberOfGuesses": "Nombre de propositions",
+    "showLetterSound": "Afficher le motif du son",
+
+    "nbWordsParameter": "Nombre de mots dans le dictionnaire",
+    "nbWordsParameterSubtitle1": "Les mots proposés sont les",
+    "nbWordsParameterSubtitle2": "mots les plus fréquents dans la langue française.",
+    "tempoBetweenLetters": "Temps entre 2 lettres",
+    "tempoBetweenLettersSubtitle": "Un temps est le temps d'un '\u2022'. Un '-' dure 3 temps. La valeur par défaut est 3.",
+
+    "pickColor": "Choix de la couleur",
+
+    "parameters": "Paramètres",
+    "previousPage": "Précédent"
+}

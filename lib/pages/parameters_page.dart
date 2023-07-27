@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:morse_trainer/global.dart';
 import 'package:morse_trainer/models/sound_generator.dart';
@@ -25,14 +26,14 @@ class _ParameterPageState extends State<ParameterPage> {
       body: ListView(
         padding: const EdgeInsets.only(top: 10, right: 30, left: 30),
         children: [
-          const Text(
-            "Général",
+          Text(
+            AppLocalizations.of(context)!.generalParameters,
             style: categoryStyle,
           ),
           const SizedBox(height: 5,),
           ListTile(
             leading: const Icon(Icons.color_lens),
-            title: const Text('Changer le thème'),
+            title: Text(AppLocalizations.of(context)!.themeParameter),
             onTap: () async {
               Color pickedColor =
                   await pickColor(context, Color(preferences["appColor"]!));
@@ -59,8 +60,7 @@ class _ParameterPageState extends State<ParameterPage> {
               SoundGenerator.setSpeed(playBackSpeed);
               await SoundGenerator.regenerateAtomicSounds();
             },
-            title: const Text(
-                "Vitesse de lecture des lettres"),
+            title: Text(AppLocalizations.of(context)!.playBackSpeedParameter),
             trailing: Text("${preferences["playBackSpeed"]!/10}"),
           ),
           ListTile(
@@ -77,8 +77,7 @@ class _ParameterPageState extends State<ParameterPage> {
               SoundGenerator.setFrequency(frequency);
               await SoundGenerator.regenerateAtomicSounds();
             },
-            title: const Text(
-                "Fréquence des sons (Hz)"),
+            title: Text(AppLocalizations.of(context)!.soundFrequencyParameter),
             trailing: Text("${preferences["frequency"]!}"),
           ),
           ListTile(
@@ -96,8 +95,7 @@ class _ParameterPageState extends State<ParameterPage> {
                 savePreferences();
               });
             },
-            title: const Text(
-                "Inclure les nombres et caractères spéciaux"),
+            title: Text(AppLocalizations.of(context)!.includeNumbersAndSpecialCharactersParameter),
             trailing: Checkbox(
               value: preferences["guessLetterAddNumbersAndSpecialCharacters"] == 1,
               onChanged: (bool? value) {
@@ -110,8 +108,7 @@ class _ParameterPageState extends State<ParameterPage> {
             ),
           ),
           const Divider(height: 30.0,),
-          const Text(
-            "Mode 'Quelle est la lettre ?'",
+          Text("${AppLocalizations.of(context)!.categoryParameter} '${AppLocalizations.of(context)!.guessLetterTitle}'",
             style: categoryStyle,
           ),
           const SizedBox(height: 5,),
@@ -127,7 +124,7 @@ class _ParameterPageState extends State<ParameterPage> {
                 savePreferences();
               });
             },
-            title: const Text("Nombre de propositions",),
+            title: Text(AppLocalizations.of(context)!.numberOfGuesses),
             trailing: Text("${preferences["guessLetterNumberOfChoice"]}"),
           ),
           ListTile(
@@ -143,8 +140,7 @@ class _ParameterPageState extends State<ParameterPage> {
                 savePreferences();
               });
             },
-            title: const Text(
-                "Afficher le motif du son"),
+            title: Text(AppLocalizations.of(context)!.showLetterSound),
             trailing: Checkbox(
               value: preferences["guessLetterShowSound"] == 1,
               onChanged: (bool? value) {
@@ -157,8 +153,7 @@ class _ParameterPageState extends State<ParameterPage> {
             ),
           ),
           const Divider(height: 30.0,),
-          const Text(
-            "Mode 'Quel est le mot ?'",
+          Text("${AppLocalizations.of(context)!.categoryParameter} '${AppLocalizations.of(context)!.guessWordTitle}'",
             style: categoryStyle,
           ),
           const SizedBox(height: 5,),
@@ -168,15 +163,14 @@ class _ParameterPageState extends State<ParameterPage> {
             ),
             onTap: () async {
               int n = await pickInt(
-                  context, preferences["guessWordNumberOfWords"]!, 10, frenchDict.length, 10);
+                  context, preferences["guessWordNumberOfWords"]!, 10, wordsDict.length, 10);
               setState(() {
                 preferences["guessWordNumberOfWords"] = n;
                 savePreferences();
               });
             },
-            title: const Text(
-                "Nombre de mots dans le dictionnaire"),
-            subtitle: Text("Les mots proposés sont les ${preferences["guessWordNumberOfWords"]} mots les plus fréquents dans la langue française."),
+            title: Text(AppLocalizations.of(context)!.nbWordsParameter),
+            subtitle: Text("${AppLocalizations.of(context)!.nbWordsParameterSubtitle1} ${preferences["guessWordNumberOfWords"]} ${AppLocalizations.of(context)!.nbWordsParameterSubtitle2}"),
             trailing: Text("${preferences["guessWordNumberOfWords"]}"),
           ),
           ListTile(
@@ -191,9 +185,8 @@ class _ParameterPageState extends State<ParameterPage> {
                 savePreferences();
               });
             },
-            title: const Text(
-                "Temps entre 2 lettres"),
-            subtitle: const Text("Un temps est le temps d'un '\u2022'. Un '-' dure 3 temps. La valeur par défaut est 3."),
+            title: Text(AppLocalizations.of(context)!.tempoBetweenLetters),
+            subtitle: Text(AppLocalizations.of(context)!.tempoBetweenLettersSubtitle),
             trailing: Text("${preferences["betweenLettersTempo"]}"),
           ),
         ],

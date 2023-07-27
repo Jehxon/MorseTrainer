@@ -31,7 +31,7 @@ Map<String, int> preferences = {
   "guessWordCurrentWord": 0,
 };
 
-List<String> frenchDict = [];
+List<String> wordsDict = [];
 String outputFile = "";
 String longDashFile = "";
 String dashFile = "";

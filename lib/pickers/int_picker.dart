@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class IntPicker extends StatefulWidget {
   final int initValue;
@@ -84,8 +85,8 @@ Future<int> pickInt(
             onPressed: () {
               Navigator.pop(context);
             },
-            child: const Text(
-              "Annuler",
+            child: Text(
+              AppLocalizations.of(context)!.cancel,
             ),
           ),
           ElevatedButton(
@@ -93,8 +94,8 @@ Future<int> pickInt(
               chosenValue = selectedValue;
               Navigator.pop(context);
             },
-            child: const Text(
-              "Valider",
+            child: Text(
+              AppLocalizations.of(context)!.confirm,
             ),
           ),
         ],

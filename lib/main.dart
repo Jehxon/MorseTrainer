@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:morse_trainer/models/preferences.dart';
 import 'home_page.dart';
 import 'package:morse_trainer/global.dart';
@@ -22,9 +24,9 @@ class _MainAppState extends State<MainApp> with WidgetsBindingObserver {
   @override
   void initState() {
     WidgetsBinding.instance.addObserver(this);
+    super.initState();
     getData();
     addThemeChangeCallback(updateColorCallback);
-    super.initState();
   }
 
   void updateColorCallback(Color c){
@@ -38,7 +40,7 @@ class _MainAppState extends State<MainApp> with WidgetsBindingObserver {
 
   void getData() async {
     await initPreferences();
-    frenchDict = await loadWordListFromAsset("assets/data/french_dict_freq.txt");
+    // wordsDict = await loadWordListFromAsset("assets/data/french_dict_freq.txt");
     SoundGenerator.setSpeed(preferences["playBackSpeed"]!/10);
     SoundGenerator.setFrequency(preferences["frequency"]!);
     outputFile = await getFilePath("current_sound.wav");
@@ -80,6 +82,16 @@ class _MainAppState extends State<MainApp> with WidgetsBindingObserver {
     if (initialized) {
       return MaterialApp(
           title: 'Morse Trainer',
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: const [
+            Locale('en'), // English
+            Locale('fr'), // French
+          ],
           theme: theme,
           home: const HomePage(),
       );

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:morse_trainer/global.dart';
 import 'package:morse_trainer/models/morse_alphabet.dart';
@@ -167,9 +168,9 @@ class _GuessLetterPageState extends State<GuessLetterPage> {
       body: Column(
         children: [
           const SizedBox(height: 30),
-          const Text(
-            "Quelle est cette lettre ?",
-            style: TextStyle(
+          Text(
+            AppLocalizations.of(context)!.guessLetterTitle,
+            style: const TextStyle(
               fontSize: 30,
             ),
           ),
@@ -182,12 +183,12 @@ class _GuessLetterPageState extends State<GuessLetterPage> {
             onPressed: () async {
               await morseAlphabet[letterToFind]?.play();
             },
-            child: const Row(
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text("Écouter"),
-                SizedBox(width: 10),
-                Icon(Ionicons.musical_notes_sharp),
+                Text(AppLocalizations.of(context)!.listenButton),
+                const SizedBox(width: 10),
+                const Icon(Ionicons.musical_notes_sharp),
               ],
             ),
           ),
@@ -212,7 +213,7 @@ class _GuessLetterPageState extends State<GuessLetterPage> {
           ),
           const Divider(height: 10),
           Text(
-            "Nombre de réussites d'affilées : $streak\nMeilleur score : ${preferences["guessLetterHighScore"]}",
+            "${AppLocalizations.of(context)!.nbSuccessiveGoodGuesses} : $streak\n${AppLocalizations.of(context)!.highscore} : ${preferences["guessLetterHighScore"]}",
             textAlign: TextAlign.center,
             style: const TextStyle(
               fontSize: 20,

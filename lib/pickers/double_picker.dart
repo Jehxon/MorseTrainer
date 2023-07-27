@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DoublePicker extends StatefulWidget {
   final double initValue;
@@ -84,8 +85,8 @@ Future<double> pickDouble(
             onPressed: () {
               Navigator.pop(context);
             },
-            child: const Text(
-              "Annuler",
+            child: Text(
+              AppLocalizations.of(context)!.cancel,
             ),
           ),
           ElevatedButton(
@@ -93,8 +94,8 @@ Future<double> pickDouble(
               chosenValue = selectedValue;
               Navigator.pop(context);
             },
-            child: const Text(
-              "Valider",
+            child: Text(
+              AppLocalizations.of(context)!.confirm,
             ),
           ),
         ],

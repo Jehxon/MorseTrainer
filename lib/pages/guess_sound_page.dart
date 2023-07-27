@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:morse_trainer/global.dart';
 import 'package:morse_trainer/models/morse_alphabet.dart';
 import 'package:morse_trainer/models/preferences.dart';
@@ -90,9 +91,9 @@ class _GuessSoundPageState extends State<GuessSoundPage> {
         child: Column(
           children: [
             const SizedBox(height: 30),
-            const Text(
-              "Quel son fait cette lettre ?",
-              style: TextStyle(
+            Text(
+              AppLocalizations.of(context)!.guessSoundTitle,
+              style: const TextStyle(
                 fontSize: 25,
               ),
             ),
@@ -154,10 +155,10 @@ class _GuessSoundPageState extends State<GuessSoundPage> {
                       color: correctGuess ? Colors.green : Color(preferences["appColor"]!),
                     ),
                   ),
-                  child: const Center(
+                  child: Center(
                     child: Text(
-                      "Appuyez !",
-                      style: TextStyle(
+                      AppLocalizations.of(context)!.pressButton,
+                      style: const TextStyle(
                         fontStyle: FontStyle.italic,
                         fontSize: 20,
                       ),
@@ -179,7 +180,7 @@ class _GuessSoundPageState extends State<GuessSoundPage> {
                       currentGuess = "";
                     });
                   },
-                  child: const Text("Annuler"),
+                  child: Text(AppLocalizations.of(context)!.cancel),
                 ),
                 const SizedBox(width: 20),
                 ElevatedButton(
@@ -191,7 +192,7 @@ class _GuessSoundPageState extends State<GuessSoundPage> {
                       onGuess();
                     }
                   },
-                  child: const Text("Valider"),
+                  child: Text(AppLocalizations.of(context)!.confirm),
                 ),
               ],
             ),
@@ -211,11 +212,11 @@ class _GuessSoundPageState extends State<GuessSoundPage> {
                   drawNewSoundToGuess();
                 }
               },
-              child: const Text("Abandonner"),
+              child: Text(AppLocalizations.of(context)!.giveUp),
             ),
             const Divider(height: 20),
             Text(
-              "Nombre de réussites d'affilées : $streak\nMeilleur score : ${preferences["guessSoundHighScore"]}",
+              "${AppLocalizations.of(context)!.nbSuccessiveGoodGuesses} : $streak\n${AppLocalizations.of(context)!.highscore} : ${preferences["guessSoundHighScore"]}",
               textAlign: TextAlign.center,
               style: const TextStyle(
                 fontSize: 20,

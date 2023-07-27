@@ -1,4 +1,5 @@
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 
 Future<Color> pickColor(BuildContext context, Color initColor) async {
@@ -7,7 +8,7 @@ Future<Color> pickColor(BuildContext context, Color initColor) async {
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: const Text('Choix de la couleur'),
+        title: Text(AppLocalizations.of(context)!.pickColor),
         content: SingleChildScrollView(
           child: BlockPicker(
             pickerColor: chosenColor,
