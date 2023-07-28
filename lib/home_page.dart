@@ -8,7 +8,6 @@ import 'package:morse_trainer/pages/guess_word_page.dart';
 import 'package:morse_trainer/pages/parameters_page.dart';
 import 'package:morse_trainer/global.dart';
 
-
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -17,9 +16,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int selectedIndex = 0;
-  bool initialized = false;
-
+  int selectedIndex = 0; // Index of the selected page in the bottom navigation bar
+  bool initialized = false; // Indicates if the page has been initialized
+  // List of page widgets to display in the bottom navigation bar
   static final List<Widget> widgetOptions = <Widget>[
     const LearningPage(),
     const GuessLetterPage(),
@@ -28,66 +27,72 @@ class _HomePageState extends State<HomePage> {
     const ParameterPage(),
   ];
 
+  // Function to change the currently displayed page based on the index
   void changePage(int index) {
-    Navigator.pop(context);
-    if (index == selectedIndex) return;
+    Navigator.pop(context); // Close the drawer
+    if (index == selectedIndex) return; // If the same page is selected, do nothing
     setState(() {
-      selectedIndex = index;
+      selectedIndex = index; // Set the new selected index to update the page
     });
   }
 
-  void loadDict() async{
+  // Function to load the dictionary of words (if not already loaded) from the assets
+  void loadDict() async {
     wordsDict = await loadWordListFromAsset(AppLocalizations.of(context)!.dictPath);
   }
 
   @override
   Widget build(BuildContext context) {
-    if(!initialized){
+    // Initialize the dictionary when the page is first built
+    if (!initialized) {
       loadDict();
       initialized = true;
     }
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Morse Trainer'),
+        title: const Text('Morse Trainer'), // AppBar title
       ),
       drawer: Drawer(
         child: ListView(
           children: [
+            // Drawer header with an image
             const DrawerHeader(
               decoration: BoxDecoration(
                 image: DecorationImage(
-                    fit: BoxFit.fill,
-                    image: AssetImage('assets/images/papa_walrus.jpg')
-                    ),
+                  fit: BoxFit.fill,
+                  image: AssetImage('assets/images/papa_walrus.jpg'),
+                ),
               ),
               child: SizedBox.shrink(),
             ),
+            // List of drawer items representing different pages
             ListTile(
               leading: const Icon(Ionicons.book_sharp),
-              title: const Text('Alphabet'),
+              title: Text(AppLocalizations.of(context)!.alphabetTitle),
               onTap: () {
-                changePage(0);
+                changePage(0); // Go to the Learning Page
               },
             ),
             ListTile(
               leading: const Icon(Ionicons.ear_outline),
               title: Text(AppLocalizations.of(context)!.guessLetterTitle),
               onTap: () {
-                changePage(1);
+                changePage(1); // Go to the Guess Letter Page
               },
             ),
             ListTile(
               leading: const Icon(Ionicons.pencil),
               title: Text(AppLocalizations.of(context)!.guessSoundTitle),
               onTap: () {
-                changePage(2);
+                changePage(2); // Go to the Guess Sound Page
               },
             ),
             ListTile(
               leading: const Icon(Ionicons.logo_wordpress),
               title: Text(AppLocalizations.of(context)!.guessWordTitle),
               onTap: () {
-                changePage(3);
+                changePage(3); // Go to the Guess Word Page
               },
             ),
             const Divider(),
@@ -95,7 +100,7 @@ class _HomePageState extends State<HomePage> {
               leading: const Icon(Icons.settings),
               title: Text(AppLocalizations.of(context)!.parameters),
               onTap: () async {
-                changePage(4);
+                changePage(4); // Go to the Parameter Page
               },
             ),
             const Divider(),
@@ -103,12 +108,13 @@ class _HomePageState extends State<HomePage> {
               title: Text(AppLocalizations.of(context)!.previousPage),
               leading: const Icon(Icons.exit_to_app),
               onTap: () {
-                Navigator.pop(context);
+                Navigator.pop(context); // Close the drawer
               },
             ),
           ],
         ),
       ),
+      // Display the selected page based on the current index
       body: widgetOptions[selectedIndex],
     );
   }

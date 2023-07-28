@@ -1,0 +1,40 @@
+{
+    "dictPath": "assets/data/english_dict_freq.txt",
+
+    "cancel": "取消",
+    "confirm": "确认",
+    "giveUp": "放弃",
+    "listenButton": "听",
+    "nbSuccessiveGoodGuesses": "当前得分",
+    "highscore": "最高得分",
+
+    "alphabetTitle": "字母表",
+
+    "guessLetterTitle": "听抄字母",
+
+    "guessSoundTitle": "发送练习",
+    "pressButton": "按此处!",
+
+    "guessWordTitle": "听抄单词",
+
+    "categoryParameter": "模式",
+    "generalParameters": "通用",
+    "themeParameter": "更改主题",
+    "playBackSpeedParameter": "播放速度",
+    "soundFrequencyParameter": "音调 (Hz)",
+    "includeNumbersAndSpecialCharactersParameter": "包含数字和符号",
+
+    "numberOfGuesses": "选项数量",
+    "showLetterSound": "显示电码",
+
+    "nbWordsParameter": "词典单词数",
+    "nbWordsParameterSubtitle1": "在词典中选择频率最高的",
+    "nbWordsParameterSubtitle2": "个词组",
+    "tempoBetweenLetters": "两个字母之间的间隔",
+    "tempoBetweenLettersSubtitle": "一个间隔时间是一个 '\u2022' 的时长. 一个 '-' 的时长是3个间隔. 如果您不知道字母何时结束, 请增加该值. 默认值是3.",
+
+    "pickColor": "选择一个颜色",
+
+    "parameters": "参数设置",
+    "previousPage": "返回"
+}
