@@ -5,8 +5,10 @@ import 'package:morse_trainer/global.dart';
 import 'package:morse_trainer/models/morse_alphabet.dart';
 import 'package:morse_trainer/models/preferences.dart';
 
+// Widget for the Guess Sound page, where users can guess Morse code sounds
 class GuessSoundPage extends StatefulWidget {
   const GuessSoundPage({super.key});
+
   @override
   State<GuessSoundPage> createState() => _GuessSoundPageState();
 }
@@ -21,17 +23,21 @@ class _GuessSoundPageState extends State<GuessSoundPage> {
 
   @override
   void initState() {
+    // Initialize the state variables when the widget is created
     letterToFind = alphabet[preferences["guessSoundCurrentSound"]!];
     currentGuess = "";
     correctGuess = false;
     streak = preferences["guessSoundCurrentScore"]!;
-    if(preferences["guessLetterAddNumbersAndSpecialCharacters"] == 0 && preferences["guessSoundCurrentSound"]! >= 26){
+    // If the setting to include numbers and special characters is disabled and the current sound index is out of the letter range (>=26),
+    // draw a new sound to guess
+    if (preferences["guessLetterAddNumbersAndSpecialCharacters"] == 0 && preferences["guessSoundCurrentSound"]! >= 26) {
       drawNewSoundToGuess();
     }
     super.initState();
   }
 
   void drawNewSoundToGuess() {
+    // Draw a new sound to guess
     setState(() {
       String letterToFindNew = randomLetter();
       while (letterToFindNew == letterToFind) {
@@ -44,6 +50,7 @@ class _GuessSoundPageState extends State<GuessSoundPage> {
   }
 
   String randomLetter() {
+    // Get a random letter and update the current sound index
     int maxNumber = preferences["guessLetterAddNumbersAndSpecialCharacters"]! == 0 ? 26 : alphabet.length;
     int n = randomGenerator.nextInt(maxNumber);
     preferences["guessSoundCurrentSound"] = n;
@@ -51,10 +58,12 @@ class _GuessSoundPageState extends State<GuessSoundPage> {
   }
 
   bool isRightSound(String sound) {
+    // Check if the user's sound guess matches the correct sound
     return sound == morseAlphabet[letterToFind]!.displaySound;
   }
 
   Future<void> onGoodGuess() async {
+    // Handle the case of a correct sound guess and update the streak
     setState(() {
       streak += 1;
       correctGuess = true;
@@ -67,6 +76,7 @@ class _GuessSoundPageState extends State<GuessSoundPage> {
   }
 
   Future<void> onWrongGuess() async {
+    // Handle the case of a wrong sound guess and reset the streak and current guess
     setState(() {
       streak = 0;
       currentGuess = "";
@@ -75,6 +85,7 @@ class _GuessSoundPageState extends State<GuessSoundPage> {
   }
 
   Future<void> onGuess() async {
+    // Handle the sound guess logic and update the streak
     if (isRightSound(currentGuess)) {
       await onGoodGuess();
     } else {
@@ -86,6 +97,7 @@ class _GuessSoundPageState extends State<GuessSoundPage> {
 
   @override
   Widget build(BuildContext context) {
+    // Widget build method for rendering the Guess Sound page UI
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -119,26 +131,30 @@ class _GuessSoundPageState extends State<GuessSoundPage> {
               borderRadius: const BorderRadius.all(Radius.circular(8)),
               child: InkWell(
                 onTapDown: (TapDownDetails details) {
-                  if(correctGuess){
-                    return;
+                  // Handle the tap-down event when the button is pressed
+                  if (correctGuess) {
+                    return; // Ignore if the correct sound has already been guessed
                   }
                   fastAudioPlayer.play();
                   lastPress = DateTime.now();
                 },
                 onTapUp: (TapUpDetails details) async {
-                  if(correctGuess){
-                    return;
+                  // Handle the tap-up event when the button is released
+                  if (correctGuess) {
+                    return; // Ignore if the correct sound has already been guessed
                   }
                   Duration pressDuration = DateTime.now().difference(lastPress);
-                  if(pressDuration < const Duration(milliseconds: 100)){
+                  if (pressDuration < const Duration(milliseconds: 100)) {
                     await Future.delayed(const Duration(milliseconds: 100) - pressDuration);
                   }
                   fastAudioPlayer.stop();
                   if (pressDuration > const Duration(milliseconds: 250)) {
+                    // If the tap duration was longer than 250 milliseconds, add a dash to the current guess
                     setState(() {
                       currentGuess = "$currentGuess-";
                     });
                   } else {
+                    // Otherwise, add a dot to the current guess
                     setState(() {
                       currentGuess = "$currentGuess\u2022";
                     });
@@ -176,6 +192,7 @@ class _GuessSoundPageState extends State<GuessSoundPage> {
                     maximumSize: MaterialStatePropertyAll<Size>(Size(150, 200)),
                   ),
                   onPressed: () {
+                    // Handle the cancel button press to clear the current guess
                     setState(() {
                       currentGuess = "";
                     });
@@ -188,7 +205,8 @@ class _GuessSoundPageState extends State<GuessSoundPage> {
                     maximumSize: MaterialStatePropertyAll<Size>(Size(150, 200)),
                   ),
                   onPressed: () {
-                    if(!correctGuess){
+                    // Handle the confirm button press to check the sound guess
+                    if (!correctGuess) {
                       onGuess();
                     }
                   },
@@ -202,11 +220,12 @@ class _GuessSoundPageState extends State<GuessSoundPage> {
                 maximumSize: MaterialStatePropertyAll<Size>(Size(150, 200)),
               ),
               onPressed: () async {
-                if(!correctGuess){
+                // Handle the give-up button press to reveal the correct sound and draw a new sound to guess
+                if (!correctGuess) {
                   currentGuess = "";
                   onGuess();
                   setState(() {
-                    currentGuess = morseAlphabet[letterToFind]!.displaySound;
+                    currentGuess = morseAlphabet[letterToFind]!.displaySound; // Show the correct sound after giving up
                   });
                   await Future.delayed(const Duration(seconds: 1));
                   drawNewSoundToGuess();

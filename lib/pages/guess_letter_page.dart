@@ -5,13 +5,16 @@ import 'package:morse_trainer/global.dart';
 import 'package:morse_trainer/models/morse_alphabet.dart';
 import 'package:morse_trainer/models/preferences.dart';
 
+// Enum representing the different states of a LetterChoice widget
 enum ChoiceState { neutral, correctlyGuessed, wronglyGuessed }
 
+// Widget representing a letter choice in the GuessLetterPage
 class LetterChoice extends StatelessWidget {
-  final String letter;
-  final Future<void> Function(int) onPress;
-  final int id;
-  final ChoiceState state;
+  final String letter; // The letter to display
+  final Future<void> Function(int)
+      onPress; // Callback function when the letter choice is tapped
+  final int id; // Unique identifier for the choice
+  final ChoiceState state; // The state of the choice
 
   const LetterChoice({
     super.key,
@@ -23,23 +26,28 @@ class LetterChoice extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Determine the background and border colors based on the state of the choice
     Color backgroundColor = Colors.transparent;
     Color borderColor = Color(preferences["appColor"]!);
     switch (state) {
       case ChoiceState.correctlyGuessed:
         backgroundColor = Colors.green;
         borderColor = Colors.green;
+        break;
       case ChoiceState.wronglyGuessed:
         backgroundColor = Colors.red;
         borderColor = Colors.red;
+        break;
       case ChoiceState.neutral:
       // nothing to do
     }
+    // Return the choice as a Material with InkWell for handling taps
     return Material(
       elevation: 20,
       borderRadius: const BorderRadius.all(Radius.circular(8)),
       child: InkWell(
         onTap: () async {
+          // Handle the tap event only when the state is neutral
           if (state == ChoiceState.neutral) {
             await onPress(id);
           }
@@ -86,6 +94,7 @@ class _GuessLetterPageState extends State<GuessLetterPage> {
 
   @override
   void initState() {
+    // Initialize the state variables when the widget is created
     numbers = [
       for (int i = 0;
           i <
@@ -102,6 +111,7 @@ class _GuessLetterPageState extends State<GuessLetterPage> {
   }
 
   void drawNewLetterToGuess() async {
+    // Draw a new letter to guess and update the choices
     setState(() {
       choicesLetters = randomLetters(numberOfChoices);
       if (choicesLetters.first == letterToFind) {
@@ -118,15 +128,18 @@ class _GuessLetterPageState extends State<GuessLetterPage> {
   }
 
   List<String> randomLetters(int n) {
+    // Get a list of random letters for the choices
     numbers.shuffle();
     return [for (int i = 0; i < n; i++) alphabet[numbers[i]]];
   }
 
   bool isRightChoice(String letter) {
+    // Check if the chosen letter is correct
     return letter == letterToFind;
   }
 
   Future<void> onGuess(int choiceId) async {
+    // Handle the letter choice logic and update the streak and choice states
     if (isRightChoice(choicesLetters[choiceId])) {
       setState(() {
         streak += 1;
@@ -153,6 +166,7 @@ class _GuessLetterPageState extends State<GuessLetterPage> {
 
   @override
   Widget build(BuildContext context) {
+    // Build the Guess Letter page UI
     Widget soundShown = switch (preferences["guessLetterShowSound"]!) {
       0 => const Icon(Ionicons.eye_off),
       _ => Text(
@@ -181,6 +195,7 @@ class _GuessLetterPageState extends State<GuessLetterPage> {
               maximumSize: MaterialStatePropertyAll<Size>(Size(140, 100)),
             ),
             onPressed: () async {
+              // Handle the listen button press to play the letter sound
               await morseAlphabet[letterToFind]?.play();
             },
             child: Row(

@@ -8,6 +8,7 @@ import 'package:morse_trainer/pickers/int_picker.dart';
 import 'package:morse_trainer/pickers/double_picker.dart';
 import 'package:morse_trainer/models/preferences.dart';
 
+// Parameters page
 class ParameterPage extends StatefulWidget {
   const ParameterPage({super.key});
 
@@ -22,6 +23,7 @@ class _ParameterPageState extends State<ParameterPage> {
       fontWeight: FontWeight.bold,
       fontSize: 16.0,
     );
+
     return Scaffold(
       body: ListView(
         padding: const EdgeInsets.only(top: 10, right: 30, left: 30),
@@ -31,12 +33,13 @@ class _ParameterPageState extends State<ParameterPage> {
             style: categoryStyle,
           ),
           const SizedBox(height: 5,),
+          // Theme Parameter
           ListTile(
             leading: const Icon(Icons.color_lens),
             title: Text(AppLocalizations.of(context)!.themeParameter),
             onTap: () async {
               Color pickedColor =
-                  await pickColor(context, Color(preferences["appColor"]!));
+              await pickColor(context, Color(preferences["appColor"]!));
               setState(() {
                 changeAppColor(pickedColor);
               });
@@ -46,6 +49,7 @@ class _ParameterPageState extends State<ParameterPage> {
               color: Color(preferences["appColor"]!),
             ),
           ),
+          // Playback Speed Parameter
           ListTile(
             leading: const Icon(
               Ionicons.play_forward_circle_sharp,
@@ -63,6 +67,7 @@ class _ParameterPageState extends State<ParameterPage> {
             title: Text(AppLocalizations.of(context)!.playBackSpeedParameter),
             trailing: Text("${preferences["playBackSpeed"]!/10}"),
           ),
+          // Sound Frequency Parameter
           ListTile(
             leading: const Icon(
               Icons.graphic_eq,
@@ -80,6 +85,7 @@ class _ParameterPageState extends State<ParameterPage> {
             title: Text(AppLocalizations.of(context)!.soundFrequencyParameter),
             trailing: Text("${preferences["frequency"]!}"),
           ),
+          // Include Numbers and Special Characters Parameter
           ListTile(
             leading: const Text(
               "0..9",
@@ -108,10 +114,12 @@ class _ParameterPageState extends State<ParameterPage> {
             ),
           ),
           const Divider(height: 30.0,),
+          // Guess Letter Category Parameters
           Text("${AppLocalizations.of(context)!.categoryParameter} '${AppLocalizations.of(context)!.guessLetterTitle}'",
             style: categoryStyle,
           ),
           const SizedBox(height: 5,),
+          // Number of Guesses Parameter
           ListTile(
             leading: const Icon(
               Ionicons.grid,
@@ -127,6 +135,7 @@ class _ParameterPageState extends State<ParameterPage> {
             title: Text(AppLocalizations.of(context)!.numberOfGuesses),
             trailing: Text("${preferences["guessLetterNumberOfChoice"]}"),
           ),
+          // Show Letter Sound Parameter
           ListTile(
             leading: Icon(
               preferences["guessLetterShowSound"] == 0
@@ -153,10 +162,12 @@ class _ParameterPageState extends State<ParameterPage> {
             ),
           ),
           const Divider(height: 30.0,),
+          // Guess Word Category Parameters
           Text("${AppLocalizations.of(context)!.categoryParameter} '${AppLocalizations.of(context)!.guessWordTitle}'",
             style: categoryStyle,
           ),
           const SizedBox(height: 5,),
+          // Number of Words Parameter
           ListTile(
             leading: const Icon(
               Ionicons.list,
@@ -173,6 +184,7 @@ class _ParameterPageState extends State<ParameterPage> {
             subtitle: Text("${AppLocalizations.of(context)!.nbWordsParameterSubtitle1} ${preferences["guessWordNumberOfWords"]} ${AppLocalizations.of(context)!.nbWordsParameterSubtitle2}"),
             trailing: Text("${preferences["guessWordNumberOfWords"]}"),
           ),
+          // Tempo Between Letters Parameter
           ListTile(
             leading: const Icon(
               Ionicons.hourglass_sharp,

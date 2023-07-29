@@ -7,8 +7,10 @@ import 'package:morse_trainer/models/morse_alphabet.dart';
 import 'package:morse_trainer/models/preferences.dart';
 import 'package:morse_trainer/models/sound_generator.dart';
 
+// Widget for the Guess Word page, where users can guess Morse code words
 class GuessWordPage extends StatefulWidget {
   const GuessWordPage({super.key});
+
   @override
   State<GuessWordPage> createState() => _GuessWordPageState();
 }
@@ -26,9 +28,10 @@ class _GuessWordPageState extends State<GuessWordPage> {
 
   @override
   void initState() {
+    // Initialize the state variables when the widget is created
     choice = preferences["guessWordCurrentWord"]!;
-    if(numberWords != preferences["guessWordNumberOfWords"]){
-      reshuffle();
+    if (numberWords != preferences["guessWordNumberOfWords"]) {
+      reshuffle(); // If the number of words changed, reshuffle the words
     }
     wordToFind = wordsDict[numbers[choice]];
     wordToFindFormatted = formatWord(wordToFind);
@@ -36,7 +39,7 @@ class _GuessWordPageState extends State<GuessWordPage> {
     currentGuess = "";
     correctGuess = false;
     super.initState();
-    playWord();
+    playWord(); // Play the word sound when the page is initialized
   }
 
   @override
@@ -45,18 +48,19 @@ class _GuessWordPageState extends State<GuessWordPage> {
     super.dispose();
   }
 
-  Future<void> playWord() async{
+  Future<void> playWord() async {
+    // Generate and play the sound corresponding to the word to find
     String sound = morseAlphabet[wordToFindFormatted[0]]!.sound;
     String betweenWordSound = " " * preferences["betweenLettersTempo"]!;
     for (int i = 1; i < wordToFindFormatted.length; i++) {
-      // Generated the sound
       sound = sound + betweenWordSound + morseAlphabet[wordToFindFormatted[i]]!.sound;
     }
     await SoundGenerator.generateSoundFile(sound);
     await LetterAudioPlayer.play();
   }
 
-  void reshuffle(){
+  void reshuffle() {
+    // Shuffle the word indices and reset the choice to the first word
     numberWords = preferences["guessWordNumberOfWords"]!;
     numbers = [for (int i = 0; i < numberWords; i++) i];
     numbers.shuffle();
@@ -66,6 +70,7 @@ class _GuessWordPageState extends State<GuessWordPage> {
   }
 
   void drawNewWordToGuess() async {
+    // Draw a new word to guess and play its sound
     setState(() {
       String wordToFindNew = nextRandomWord();
       while (wordToFindNew == wordToFind) {
@@ -81,6 +86,7 @@ class _GuessWordPageState extends State<GuessWordPage> {
   }
 
   String nextRandomWord() {
+    // Get the next random word and update the choice index
     choice = (choice + 1) % numberWords;
     preferences["guessWordCurrentWord"] = choice;
     savePreferences();
@@ -88,10 +94,12 @@ class _GuessWordPageState extends State<GuessWordPage> {
   }
 
   bool isRightWord(String word) {
+    // Check if the user's guess matches the word to find
     return formatWord(word) == wordToFindFormatted;
   }
 
   Future<void> onGoodGuess() async {
+    // Handle the case of a correct guess and update the streak
     setState(() {
       streak += 1;
       correctGuess = true;
@@ -104,6 +112,7 @@ class _GuessWordPageState extends State<GuessWordPage> {
   }
 
   Future<void> onWrongGuess() async {
+    // Handle the case of a wrong guess and reset the streak
     setState(() {
       streak = 0;
     });
@@ -111,6 +120,7 @@ class _GuessWordPageState extends State<GuessWordPage> {
   }
 
   Future<void> onGuess() async {
+    // Handle the guess logic and save the streak
     if (isRightWord(currentGuess)) {
       await onGoodGuess();
     } else {
@@ -122,6 +132,7 @@ class _GuessWordPageState extends State<GuessWordPage> {
 
   @override
   Widget build(BuildContext context) {
+    // Widget build method for rendering the Guess Word page UI
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -140,7 +151,7 @@ class _GuessWordPageState extends State<GuessWordPage> {
                 maximumSize: MaterialStatePropertyAll<Size>(Size(140, 100)),
               ),
               onPressed: () async {
-                await playWord();
+                await playWord(); // Play the word sound again when the listen button is pressed
               },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -154,12 +165,12 @@ class _GuessWordPageState extends State<GuessWordPage> {
             const Divider(height: 10),
             TextField(
               onChanged: (String s) {
-                currentGuess = s;
+                currentGuess = s; // Update the current guess as the user types
               },
               onSubmitted: (String s) {
-                onGuess();
+                onGuess(); // Handle the guess when the user submits the input
               },
-              onEditingComplete: () {}, // this prevents keyboard from closing
+              onEditingComplete: () {}, // This prevents the keyboard from closing
               controller: textEditingController,
               textInputAction: TextInputAction.send,
               keyboardType: TextInputType.text,
@@ -171,9 +182,7 @@ class _GuessWordPageState extends State<GuessWordPage> {
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(
-                    color: correctGuess
-                        ? Colors.green
-                        : Color(preferences["appColor"]!),
+                    color: correctGuess ? Colors.green : Color(preferences["appColor"]!),
                     width: 2.0,
                   ),
                 ),
@@ -188,15 +197,16 @@ class _GuessWordPageState extends State<GuessWordPage> {
                     maximumSize: MaterialStatePropertyAll<Size>(Size(150, 200)),
                   ),
                   onPressed: () async {
-                    if(!correctGuess){
+                    // Handle the give-up button press
+                    if (!correctGuess) {
                       currentGuess = "";
-                      onGuess();
+                      onGuess(); // Treat the give-up as a wrong guess and proceed accordingly
                       setState(() {
                         textEditingController.clear();
-                        textEditingController.text = wordToFind;
+                        textEditingController.text = wordToFind; // Show the correct word after giving up
                       });
                       await Future.delayed(const Duration(seconds: 1));
-                      drawNewWordToGuess();
+                      drawNewWordToGuess(); // Draw a new word after a short delay
                     }
                   },
                   child: Text(AppLocalizations.of(context)!.giveUp),
@@ -207,8 +217,9 @@ class _GuessWordPageState extends State<GuessWordPage> {
                     maximumSize: MaterialStatePropertyAll<Size>(Size(150, 200)),
                   ),
                   onPressed: () {
-                    if(!correctGuess){
-                      onGuess();
+                    // Handle the confirm button press
+                    if (!correctGuess) {
+                      onGuess(); // Treat the confirm as a regular guess
                     }
                   },
                   child: Text(AppLocalizations.of(context)!.confirm),
