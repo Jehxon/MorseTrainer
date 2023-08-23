@@ -16,6 +16,12 @@
     "pressButton": "Press here !",
 
     "guessWordTitle": "Find the word",
+    "enterGuess": "Enter guess",
+
+    "translatorTitle": "Translator",
+    "englishVersion": "English text",
+    "morseVersion": "Morse version",
+
 
     "categoryParameter": "Mode",
     "generalParameters": "General",

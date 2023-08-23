@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:morse_trainer/pages/learning_page.dart';
+import 'package:morse_trainer/pages/translator_page.dart';
 import 'package:morse_trainer/pages/guess_letter_page.dart';
 import 'package:morse_trainer/pages/guess_sound_page.dart';
 import 'package:morse_trainer/pages/guess_word_page.dart';
@@ -21,6 +22,7 @@ class _HomePageState extends State<HomePage> {
   // List of page widgets to display in the bottom navigation bar
   static final List<Widget> widgetOptions = <Widget>[
     const LearningPage(),
+    const TranslatorPage(),
     const GuessLetterPage(),
     const GuessSoundPage(),
     const GuessWordPage(),
@@ -75,24 +77,31 @@ class _HomePageState extends State<HomePage> {
               },
             ),
             ListTile(
+              leading: const Icon(Icons.change_circle_outlined),
+              title: Text(AppLocalizations.of(context)!.translatorTitle),
+              onTap: () {
+                changePage(1); // Go to the Translator Page
+              },
+            ),
+            ListTile(
               leading: const Icon(Ionicons.ear_outline),
               title: Text(AppLocalizations.of(context)!.guessLetterTitle),
               onTap: () {
-                changePage(1); // Go to the Guess Letter Page
+                changePage(2); // Go to the Guess Letter Page
               },
             ),
             ListTile(
               leading: const Icon(Ionicons.pencil),
               title: Text(AppLocalizations.of(context)!.guessSoundTitle),
               onTap: () {
-                changePage(2); // Go to the Guess Sound Page
+                changePage(3); // Go to the Guess Sound Page
               },
             ),
             ListTile(
               leading: const Icon(Ionicons.logo_wordpress),
               title: Text(AppLocalizations.of(context)!.guessWordTitle),
               onTap: () {
-                changePage(3); // Go to the Guess Word Page
+                changePage(4); // Go to the Guess Word Page
               },
             ),
             const Divider(),
@@ -100,7 +109,7 @@ class _HomePageState extends State<HomePage> {
               leading: const Icon(Icons.settings),
               title: Text(AppLocalizations.of(context)!.parameters),
               onTap: () async {
-                changePage(4); // Go to the Parameter Page
+                changePage(5); // Go to the Parameter Page
               },
             ),
             const Divider(),

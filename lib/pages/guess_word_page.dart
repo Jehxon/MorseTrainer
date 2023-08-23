@@ -51,9 +51,9 @@ class _GuessWordPageState extends State<GuessWordPage> {
   Future<void> playWord() async {
     // Generate and play the sound corresponding to the word to find
     String sound = morseAlphabet[wordToFindFormatted[0]]!.sound;
-    String betweenWordSound = " " * preferences["betweenLettersTempo"]!;
+    String betweenLetterSound = " " * preferences["betweenLettersTempo"]!;
     for (int i = 1; i < wordToFindFormatted.length; i++) {
-      sound = sound + betweenWordSound + morseAlphabet[wordToFindFormatted[i]]!.sound;
+      sound = sound + betweenLetterSound + morseAlphabet[wordToFindFormatted[i]]!.sound;
     }
     await SoundGenerator.generateSoundFile(sound);
     await LetterAudioPlayer.play();
@@ -176,6 +176,7 @@ class _GuessWordPageState extends State<GuessWordPage> {
               keyboardType: TextInputType.text,
               textAlign: TextAlign.center,
               decoration: InputDecoration(
+                hintText: AppLocalizations.of(context)!.enterGuess,
                 border: const OutlineInputBorder(),
                 constraints: const BoxConstraints(
                   maxWidth: 250,

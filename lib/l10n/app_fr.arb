@@ -16,6 +16,11 @@
     "pressButton": "Appuyez ici !",
 
     "guessWordTitle": "Quel est ce mot ?",
+    "enterGuess": "Devinez",
+
+    "translatorTitle": "Traducteur",
+    "englishVersion": "Texte",
+    "morseVersion": "Version morse",
 
     "categoryParameter": "Mode",
     "generalParameters": "Général",

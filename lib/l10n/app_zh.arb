@@ -16,6 +16,11 @@
     "pressButton": "按此处!",
 
     "guessWordTitle": "听抄单词",
+    "enterGuess": "输入猜测",
+
+    "translatorTitle": "翻译者",
+    "englishVersion": "英文文本",
+    "morseVersion": "莫尔斯文本",
 
     "categoryParameter": "模式",
     "generalParameters": "通用",
